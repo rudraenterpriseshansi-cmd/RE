@@ -1,80 +1,25 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title></title>
 
 <style>
 
-/* FULL BLACK SCREEN */
-
-html,body{
-margin:0;
-padding:0;
-width:100%;
-height:100%;
-background:black;
-overflow:hidden;
-font-family:Arial;
-}
-
-/* CENTER DISPLAY */
-
 body{
-display:flex;
-justify-content:center;
-align-items:center;
+background:#000;
+margin:0;
+font-family:Arial;
+color:white;
+overflow:hidden;
 }
 
-/* OUTER FRAME */
-
-.frame{
-width:100%;
-height:100%;
+.container{
+width:100vw;
+height:100vh;
 border:3px solid #00aaff;
 box-sizing:border-box;
 }
-
-/* CONTENT AREA */
-
-.container{
-width:100%;
-height:100%;
-display:flex;
-flex-direction:column;
-}
-
-/* CLIENT NAME */
-
-.header{
-color:#00ff66;
-font-size:48px;
-text-align:center;
-padding:10px;
-border-bottom:3px solid #00aaff;
-font-weight:bold;
-}
-
-/* DATE TIME */
-
-.datetime{
-display:grid;
-grid-template-columns:1fr 1fr;
-border-bottom:3px solid #00aaff;
-}
-
-.datetime div{
-color:white;
-font-size:34px;
-padding:10px;
-text-align:center;
-border-right:3px solid #00aaff;
-}
-
-.datetime div:last-child{
-border-right:none;
-}
-
-/* DATA TABLE */
 
 table{
 width:100%;
@@ -84,29 +29,33 @@ table-layout:fixed;
 }
 
 td{
-border:3px solid #00aaff;
-font-size:44px;
-padding:18px;
+border:2px solid #00aaff;
 text-align:center;
-}
-
-/* COLUMN COLORS */
-
-.label{
-width:33.33%;
-color:#ff66ff;
-text-align:left;
-padding-left:40px;
-}
-
-.value{
-width:33.33%;
-color:#ffcc00;
 font-weight:bold;
 }
 
+.name{
+font-size:4vw;
+color:#00ff66;
+}
+
+.datetime{
+font-size:2.5vw;
+color:#ffffff;
+}
+
+.label{
+font-size:2.5vw;
+color:#ff66ff;
+}
+
+.value{
+font-size:3vw;
+color:#ffcc00;
+}
+
 .unit{
-width:33.33%;
+font-size:2vw;
 color:#00ffff;
 }
 
@@ -115,18 +64,18 @@ color:#00ffff;
 
 <body>
 
-<div class="frame">
-
 <div class="container">
 
-<div class="header" id="clientName">AQI DISPLAY</div>
-
-<div class="datetime">
-<div id="date"></div>
-<div id="time"></div>
-</div>
-
 <table>
+
+<tr>
+<td colspan="3" class="name" id="clientName">CLIENT</td>
+</tr>
+
+<tr>
+<td class="datetime" id="date"></td>
+<td class="datetime" colspan="2" id="time"></td>
+</tr>
 
 <tr>
 <td class="label">PM2.5</td>
@@ -137,7 +86,7 @@ color:#00ffff;
 <tr>
 <td class="label">TEMP</td>
 <td class="value" id="temp">--</td>
-<td class="unit">DegC</td>
+<td class="unit">°C</td>
 </tr>
 
 <tr>
@@ -162,65 +111,62 @@ color:#00ffff;
 
 </div>
 
-</div>
-
 <script>
 
-/* GET URL PARAMETERS */
+// URL PARAMETERS
+const params = new URLSearchParams(window.location.search)
 
-const params = new URLSearchParams(window.location.search);
-const client = params.get("client");
-const device = params.get("device") || "11";
+const device = params.get("device") || "11"
+const name = params.get("name") || "AQI DEVICE"
 
-/* CHANGE CLIENT NAME */
+document.getElementById("clientName").innerText = name
 
-if(client){
-document.getElementById("clientName").innerText = client;
-}
 
-/* DATE TIME */
-
+// DATE TIME
 function updateTime(){
 
-const now = new Date();
+const now = new Date()
 
-document.getElementById("date").innerText = now.toLocaleDateString();
-document.getElementById("time").innerText = now.toLocaleTimeString();
+document.getElementById("date").innerText =
+now.toLocaleDateString()
+
+document.getElementById("time").innerText =
+now.toLocaleTimeString()
 
 }
 
-/* FETCH DATA */
 
+// FETCH DATA
 async function fetchData(){
 
 try{
 
-const response = await fetch(
-"https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device
-);
+const response = await fetch("https://aqi.rudraenterpriseshansi.workers.dev/?device="+device)
 
-const data = await response.json();
-const p = data.parameter;
+const data = await response.json()
 
-document.getElementById("pm25").innerText = p.pm25.value;
-document.getElementById("temp").innerText = p.temperature.value;
-document.getElementById("hum").innerText = p.humidity.value;
-document.getElementById("pm10").innerText = p.pm10.value;
-document.getElementById("aqi").innerText = p.aqi.value;
+const p = data.parameter
 
-}catch(e){
+document.getElementById("pm25").innerText = p.pm25.value
+document.getElementById("temp").innerText = p.temperature.value
+document.getElementById("hum").innerText = p.humidity.value
+document.getElementById("pm10").innerText = p.pm10.value
+document.getElementById("aqi").innerText = p.aqi.value
 
-console.log("API Error",e);
+}
+catch(e){
+
+console.log("API ERROR",e)
 
 }
 
 }
 
-setInterval(updateTime,1000);
-setInterval(fetchData,20000);
+setInterval(updateTime,1000)
+setInterval(fetchData,20000)
 
-updateTime();
-fetchData();
+updateTime()
+fetchData()
 
 </script>
 
