@@ -4,16 +4,23 @@
 
 <style>
 
+/* FORCE REMOVE ANY GITHUB HEADER */
+header, .header, .page-header, .site-header, .repohead, nav {
+display:none !important;
+}
+
+/* FULL BLACK SCREEN */
 html,body{
-background:#000000;
+background:#000;
 margin:0;
 padding:0;
 height:100%;
+width:100%;
+overflow:hidden;
 font-family:Arial;
 }
 
-/* SCREEN CENTER */
-
+/* CENTER DISPLAY */
 body{
 display:flex;
 justify-content:center;
@@ -23,41 +30,40 @@ align-items:center;
 /* OUTER FRAME */
 
 .frame{
-width:95%;
-height:95%;
+width:100%;
+height:100%;
 border:3px solid #00aaff;
-background:#000000;
+box-sizing:border-box;
+background:#000;
 }
 
-/* MAIN DISPLAY */
+/* CONTENT AREA */
 
 .container{
 width:100%;
 height:100%;
-background:#000000;
 display:flex;
 flex-direction:column;
+background:#000;
 }
 
 /* CLIENT NAME */
 
-.header{
+.title{
 color:#00ff66;
 font-size:48px;
 text-align:center;
 padding:10px;
 border-bottom:3px solid #00aaff;
 font-weight:bold;
-background:#000000;
 }
 
-/* DATE TIME ROW */
+/* DATE TIME */
 
 .datetime{
 display:grid;
 grid-template-columns:1fr 1fr;
 border-bottom:3px solid #00aaff;
-background:#000000;
 }
 
 .datetime div{
@@ -66,7 +72,6 @@ font-size:34px;
 padding:10px;
 text-align:center;
 border-right:3px solid #00aaff;
-background:#000000;
 }
 
 .datetime div:last-child{
@@ -80,7 +85,6 @@ width:100%;
 height:100%;
 border-collapse:collapse;
 table-layout:fixed;
-background:#000000;
 }
 
 td{
@@ -88,10 +92,9 @@ border:3px solid #00aaff;
 font-size:44px;
 padding:18px;
 text-align:center;
-background:#000000;
 }
 
-/* COLUMNS */
+/* 3 EQUAL COLUMNS */
 
 .label{
 width:33.33%;
@@ -120,7 +123,7 @@ color:#00ffff;
 
 <div class="container">
 
-<div class="header" id="clientName">AQI DISPLAY</div>
+<div class="title" id="clientName">AQI DISPLAY</div>
 
 <div class="datetime">
 <div id="date"></div>
@@ -188,4 +191,31 @@ async function fetchData(){
 
 try{
 
-const response = await fetch
+const response = await fetch("https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device);
+const data = await response.json();
+const p = data.parameter;
+
+document.getElementById("pm25").innerText = p.pm25.value;
+document.getElementById("temp").innerText = p.temperature.value;
+document.getElementById("hum").innerText = p.humidity.value;
+document.getElementById("pm10").innerText = p.pm10.value;
+document.getElementById("aqi").innerText = p.aqi.value;
+
+}catch(e){
+
+console.log(e);
+
+}
+
+}
+
+setInterval(updateTime,1000);
+setInterval(fetchData,20000);
+
+updateTime();
+fetchData();
+
+</script>
+
+</body>
+</html>
