@@ -4,14 +4,20 @@
 
 <style>
 
-body{
-background:black;
+html,body{
+background:#000000;
 margin:0;
+padding:0;
+height:100%;
 font-family:Arial;
+}
+
+/* SCREEN CENTER */
+
+body{
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
 }
 
 /* OUTER FRAME */
@@ -20,17 +26,20 @@ height:100vh;
 width:95%;
 height:95%;
 border:3px solid #00aaff;
-box-sizing:border-box;
+background:#000000;
 }
 
-/* INNER DISPLAY */
+/* MAIN DISPLAY */
 
 .container{
 width:100%;
 height:100%;
+background:#000000;
 display:flex;
 flex-direction:column;
 }
+
+/* CLIENT NAME */
 
 .header{
 color:#00ff66;
@@ -39,31 +48,39 @@ text-align:center;
 padding:10px;
 border-bottom:3px solid #00aaff;
 font-weight:bold;
+background:#000000;
 }
+
+/* DATE TIME ROW */
 
 .datetime{
 display:grid;
 grid-template-columns:1fr 1fr;
 border-bottom:3px solid #00aaff;
+background:#000000;
 }
 
 .datetime div{
-color:white;
+color:#ffffff;
 font-size:34px;
 padding:10px;
 text-align:center;
 border-right:3px solid #00aaff;
+background:#000000;
 }
 
 .datetime div:last-child{
 border-right:none;
 }
 
+/* TABLE */
+
 table{
 width:100%;
 height:100%;
 border-collapse:collapse;
 table-layout:fixed;
+background:#000000;
 }
 
 td{
@@ -71,9 +88,10 @@ border:3px solid #00aaff;
 font-size:44px;
 padding:18px;
 text-align:center;
+background:#000000;
 }
 
-/* Equal Columns */
+/* COLUMNS */
 
 .label{
 width:33.33%;
@@ -170,33 +188,4 @@ async function fetchData(){
 
 try{
 
-const response = await fetch("https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device);
-
-const data = await response.json();
-
-const p = data.parameter;
-
-document.getElementById("pm25").innerText = p.pm25.value;
-document.getElementById("temp").innerText = p.temperature.value;
-document.getElementById("hum").innerText = p.humidity.value;
-document.getElementById("pm10").innerText = p.pm10.value;
-document.getElementById("aqi").innerText = p.aqi.value;
-
-}catch(e){
-
-console.log("API Error",e);
-
-}
-
-}
-
-setInterval(updateTime,1000);
-setInterval(fetchData,20000);
-
-updateTime();
-fetchData();
-
-</script>
-
-</body>
-</html>
+const response = await fetch
