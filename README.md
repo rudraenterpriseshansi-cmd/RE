@@ -1,26 +1,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 
-/* FORCE REMOVE ANY GITHUB HEADER */
-header, .header, .page-header, .site-header, .repohead, nav {
-display:none !important;
-}
-
 /* FULL BLACK SCREEN */
+
 html,body{
-background:#000;
 margin:0;
 padding:0;
-height:100%;
 width:100%;
+height:100%;
+background:black;
 overflow:hidden;
 font-family:Arial;
 }
 
 /* CENTER DISPLAY */
+
 body{
 display:flex;
 justify-content:center;
@@ -34,7 +32,6 @@ width:100%;
 height:100%;
 border:3px solid #00aaff;
 box-sizing:border-box;
-background:#000;
 }
 
 /* CONTENT AREA */
@@ -44,12 +41,11 @@ width:100%;
 height:100%;
 display:flex;
 flex-direction:column;
-background:#000;
 }
 
 /* CLIENT NAME */
 
-.title{
+.header{
 color:#00ff66;
 font-size:48px;
 text-align:center;
@@ -67,7 +63,7 @@ border-bottom:3px solid #00aaff;
 }
 
 .datetime div{
-color:#ffffff;
+color:white;
 font-size:34px;
 padding:10px;
 text-align:center;
@@ -78,7 +74,7 @@ border-right:3px solid #00aaff;
 border-right:none;
 }
 
-/* TABLE */
+/* DATA TABLE */
 
 table{
 width:100%;
@@ -94,7 +90,7 @@ padding:18px;
 text-align:center;
 }
 
-/* 3 EQUAL COLUMNS */
+/* COLUMN COLORS */
 
 .label{
 width:33.33%;
@@ -123,7 +119,7 @@ color:#00ffff;
 
 <div class="container">
 
-<div class="title" id="clientName">AQI DISPLAY</div>
+<div class="header" id="clientName">AQI DISPLAY</div>
 
 <div class="datetime">
 <div id="date"></div>
@@ -170,13 +166,19 @@ color:#00ffff;
 
 <script>
 
+/* GET URL PARAMETERS */
+
 const params = new URLSearchParams(window.location.search);
 const client = params.get("client");
 const device = params.get("device") || "11";
 
+/* CHANGE CLIENT NAME */
+
 if(client){
 document.getElementById("clientName").innerText = client;
 }
+
+/* DATE TIME */
 
 function updateTime(){
 
@@ -187,11 +189,16 @@ document.getElementById("time").innerText = now.toLocaleTimeString();
 
 }
 
+/* FETCH DATA */
+
 async function fetchData(){
 
 try{
 
-const response = await fetch("https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device);
+const response = await fetch(
+"https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device
+);
+
 const data = await response.json();
 const p = data.parameter;
 
@@ -203,7 +210,7 @@ document.getElementById("aqi").innerText = p.aqi.value;
 
 }catch(e){
 
-console.log(e);
+console.log("API Error",e);
 
 }
 
