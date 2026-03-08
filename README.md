@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -15,14 +14,27 @@ align-items:center;
 height:100vh;
 }
 
+/* OUTER FRAME */
+
+.frame{
+width:95%;
+height:95%;
+border:3px solid #00aaff;
+box-sizing:border-box;
+}
+
+/* INNER DISPLAY */
+
 .container{
-width:700px;
-border:4px solid #00aaff;
+width:100%;
+height:100%;
+display:flex;
+flex-direction:column;
 }
 
 .header{
 color:#00ff66;
-font-size:40px;
+font-size:48px;
 text-align:center;
 padding:10px;
 border-bottom:3px solid #00aaff;
@@ -37,10 +49,10 @@ border-bottom:3px solid #00aaff;
 
 .datetime div{
 color:white;
-font-size:26px;
-padding:8px;
+font-size:34px;
+padding:10px;
 text-align:center;
-border-right:2px solid #00aaff;
+border-right:3px solid #00aaff;
 }
 
 .datetime div:last-child{
@@ -49,35 +61,44 @@ border-right:none;
 
 table{
 width:100%;
+height:100%;
 border-collapse:collapse;
+table-layout:fixed;
 }
 
 td{
-border:2px solid #00aaff;
-padding:15px;
-font-size:30px;
+border:3px solid #00aaff;
+font-size:44px;
+padding:18px;
+text-align:center;
 }
 
+/* Equal Columns */
+
 .label{
+width:33.33%;
 color:#ff66ff;
-padding-left:20px;
+text-align:left;
+padding-left:40px;
 }
 
 .value{
+width:33.33%;
 color:#ffcc00;
-text-align:center;
 font-weight:bold;
 }
 
 .unit{
+width:33.33%;
 color:#00ffff;
-text-align:center;
 }
 
 </style>
 </head>
 
 <body>
+
+<div class="frame">
 
 <div class="container">
 
@@ -124,10 +145,11 @@ text-align:center;
 
 </div>
 
+</div>
+
 <script>
 
 const params = new URLSearchParams(window.location.search);
-
 const client = params.get("client");
 const device = params.get("device") || "11";
 
@@ -139,11 +161,8 @@ function updateTime(){
 
 const now = new Date();
 
-document.getElementById("date").innerText =
-now.toLocaleDateString();
-
-document.getElementById("time").innerText =
-now.toLocaleTimeString();
+document.getElementById("date").innerText = now.toLocaleDateString();
+document.getElementById("time").innerText = now.toLocaleTimeString();
 
 }
 
@@ -163,11 +182,9 @@ document.getElementById("hum").innerText = p.humidity.value;
 document.getElementById("pm10").innerText = p.pm10.value;
 document.getElementById("aqi").innerText = p.aqi.value;
 
-}
+}catch(e){
 
-catch(e){
-
-console.log(e);
+console.log("API Error",e);
 
 }
 
