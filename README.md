@@ -1,19 +1,18 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AQI Display</title>
 
 <style>
 
 body{
 background:black;
-font-family:Arial;
 margin:0;
+font-family:Arial;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-color:white;
 }
 
 .container{
@@ -22,9 +21,9 @@ border:4px solid #00aaff;
 }
 
 .header{
-text-align:center;
-font-size:42px;
 color:#00ff66;
+font-size:40px;
+text-align:center;
 padding:10px;
 border-bottom:3px solid #00aaff;
 font-weight:bold;
@@ -37,8 +36,9 @@ border-bottom:3px solid #00aaff;
 }
 
 .datetime div{
-padding:10px;
-font-size:28px;
+color:white;
+font-size:26px;
+padding:8px;
 text-align:center;
 border-right:2px solid #00aaff;
 }
@@ -55,23 +55,23 @@ border-collapse:collapse;
 td{
 border:2px solid #00aaff;
 padding:15px;
-font-size:32px;
-text-align:center;
+font-size:30px;
 }
 
 .label{
 color:#ff66ff;
-text-align:left;
 padding-left:20px;
 }
 
 .value{
 color:#ffcc00;
+text-align:center;
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
+text-align:center;
 }
 
 </style>
@@ -84,8 +84,8 @@ color:#00ffff;
 <div class="header" id="clientName">AQI DISPLAY</div>
 
 <div class="datetime">
-<div id="date">--</div>
-<div id="time">--</div>
+<div id="date"></div>
+<div id="time"></div>
 </div>
 
 <table>
@@ -126,8 +126,8 @@ color:#00ffff;
 
 <script>
 
-// URL PARAMETERS
 const params = new URLSearchParams(window.location.search);
+
 const client = params.get("client");
 const device = params.get("device") || "11";
 
@@ -135,7 +135,6 @@ if(client){
 document.getElementById("clientName").innerText = client;
 }
 
-// DATE TIME
 function updateTime(){
 
 const now = new Date();
@@ -148,38 +147,37 @@ now.toLocaleTimeString();
 
 }
 
-// FETCH DATA
 async function fetchData(){
 
 try{
 
-const response = await fetch("https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device)
+const response = await fetch("https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device);
 
-const data = await response.json()
+const data = await response.json();
 
-const p = data.parameter
+const p = data.parameter;
 
-document.getElementById("pm25").innerText = p.pm25.value
-document.getElementById("temp").innerText = p.temperature.value
-document.getElementById("hum").innerText = p.humidity.value
-document.getElementById("pm10").innerText = p.pm10.value
-document.getElementById("aqi").innerText = p.aqi.value
+document.getElementById("pm25").innerText = p.pm25.value;
+document.getElementById("temp").innerText = p.temperature.value;
+document.getElementById("hum").innerText = p.humidity.value;
+document.getElementById("pm10").innerText = p.pm10.value;
+document.getElementById("aqi").innerText = p.aqi.value;
 
 }
 
 catch(e){
 
-console.log("API Error", e)
+console.log(e);
 
 }
 
 }
 
-setInterval(updateTime,1000)
-setInterval(fetchData,20000)
+setInterval(updateTime,1000);
+setInterval(fetchData,20000);
 
-updateTime()
-fetchData()
+updateTime();
+fetchData();
 
 </script>
 
