@@ -46,7 +46,7 @@ border-bottom:0.2px solid #00aaff;
 
 marquee{
 color:#00ff66;
-font-size:12vh; /* MAX SAFE */
+font-size:10vh; /* MAX SAFE */
 font-weight:bold;
 width:100%;
 }
@@ -63,7 +63,7 @@ border-bottom:0.2px solid #00aaff;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:12vh;
+font-size:10vh;
 font-weight:bold; /* BOLD */
 color:white;
 }
@@ -90,19 +90,19 @@ overflow:hidden;
 /* TEXT */
 .label{
 color:#ff66ff;
-font-size:12vh;
+font-size:10vh;
 font-weight:bold;
 }
 
 .value{
 color:#ffcc00;
-font-size:12vh; /* MAX BIG */
+font-size:10vh; /* MAX BIG */
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
-font-size:12vh;
+font-size:9vh;
 font-weight:bold; /* BOLD */
 }
 
