@@ -41,12 +41,12 @@ height:14%;
 display:flex;
 align-items:center;
 overflow:hidden;
-border-bottom:0.2px solid #00aaff; /* thinner */
+border-bottom:0.2px solid #00aaff; /* ultra thin */
 }
 
 marquee{
 color:#00ff66;
-font-size:12vh; /* bigger */
+font-size:15vh; /* ALL TEXT SAME */
 font-weight:bold;
 width:100%;
 }
@@ -56,24 +56,24 @@ width:100%;
 height:10%;
 display:grid;
 grid-template-columns:1fr 1fr;
-border-bottom:0.2px solid #00aaff; /* thinner */
+border-bottom:0.2px solid #00aaff; /* ultra thin */
 }
 
 .date,.time{
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:12vh; /* bigger */
+font-size:15vh; /* SAME SIZE */
 color:white;
 }
 
-/* SINGLE LINE GRID (ULTRA THIN) */
+/* GRID */
 .data{
 flex:1;
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
 grid-template-rows:repeat(5,1fr);
-gap:0.2px;                 /* THIN BORDER */
+gap:0.2px;                 /* ultra thin lines */
 background:#00aaff;
 }
 
@@ -85,22 +85,22 @@ align-items:center;
 text-align:center;
 }
 
-/* TEXT (BIG LED STYLE) */
+/* ALL TEXT SAME SIZE */
 .label{
 color:#ff66ff;
-font-size:12vh; /* bigger */
+font-size:15vh;
 font-weight:bold;
 }
 
 .value{
 color:#ffcc00;
-font-size:12vh;   /* MAIN BIG VALUE */
+font-size:15vh;
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
-font-size:12vh; /* bigger */
+font-size:15vh;
 }
 
 </style>
@@ -124,7 +124,7 @@ AQI DISPLAY
 <div class="time" id="time"></div>
 </div>
 
-<!-- DATA GRID -->
+<!-- DATA -->
 <div class="data">
 
 <div class="cell label">PM2.5</div>
@@ -164,16 +164,18 @@ params.get("name") ||
 "AQI DISPLAY";
 
 name = decodeURIComponent(name);
-
-/* SET NAME */
 document.getElementById("clientName").innerText = name;
 
-/* DATE TIME */
+/* DATE TIME (DD/MM/YYYY) */
 function updateTime(){
 const now = new Date();
 
+const day = String(now.getDate()).padStart(2, '0');
+const month = String(now.getMonth()+1).padStart(2, '0');
+const year = now.getFullYear();
+
 document.getElementById("date").innerText =
-now.toLocaleDateString();
+day + "/" + month + "/" + year;
 
 document.getElementById("time").innerText =
 now.toLocaleTimeString();
