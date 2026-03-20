@@ -46,7 +46,7 @@ border-bottom:0.2px solid #00aaff;
 
 marquee{
 color:#00ff66;
-font-size:15vh; /* MAX SAFE */
+font-size:12vh; /* MAX SAFE */
 font-weight:bold;
 width:100%;
 }
