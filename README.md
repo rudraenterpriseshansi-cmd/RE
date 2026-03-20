@@ -25,56 +25,56 @@ font-family:Arial, Helvetica, sans-serif;
 overflow:hidden;
 }
 
-/* 4:3 RATIO */
+/* 4:3 RATIO CONTAINER */
 .container{
 width:100vw;
-height:75vw;
+height:75vw; /* 4:3 ratio */
 max-height:100vh;
 max-width:133.33vh;
+border:2px solid #00aaff;
 display:flex;
 flex-direction:column;
 }
 
 /* HEADER */
 .header{
-height:12%; /* reduced to give more space */
+height:14%;
 display:flex;
 align-items:center;
+border-bottom:2px solid #00aaff;
 overflow:hidden;
-border-bottom:1px solid #00aaff; /* FIXED (0.2px not reliable) */
 }
 
 marquee{
 color:#00ff66;
-font-size:8vh; /* balanced */
+font-size:6vh;
 font-weight:bold;
 width:100%;
 }
 
 /* DATE TIME */
 .datetime{
-height:8%;
+height:10%;
 display:grid;
 grid-template-columns:1fr 1fr;
-border-bottom:1px solid #00aaff;
+border-bottom:2px solid #00aaff;
 }
 
 .date,.time{
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:4vh;  /* reduced */
-font-weight:bold;
+font-size:3vh;
 color:white;
 }
 
-/* GRID */
+/* DATA GRID */
 .data{
 flex:1;
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
 grid-template-rows:repeat(5,1fr);
-gap:1px;              /* FIXED */
+gap:2px;
 background:#00aaff;
 }
 
@@ -84,26 +84,24 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-overflow:hidden;
 }
 
 /* TEXT */
 .label{
 color:#ff66ff;
-font-size:5vh;
+font-size:3.5vh;
 font-weight:bold;
 }
 
 .value{
 color:#ffcc00;
-font-size:9vh;   /* MAX WITHOUT BREAK */
+font-size:5vh;
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
-font-size:5vh;
-font-weight:bold;
+font-size:2.5vh;
 }
 
 </style>
@@ -114,17 +112,18 @@ font-weight:bold;
 
 <div class="container">
 
+<!-- HEADER -->
 <div class="header">
-<marquee id="clientName" scrollamount="1" scrolldelay="20">
-AQI DISPLAY
-</marquee>
+<marquee id="clientName">AQI DISPLAY</marquee>
 </div>
 
+<!-- DATE TIME -->
 <div class="datetime">
 <div class="date" id="date"></div>
 <div class="time" id="time"></div>
 </div>
 
+<!-- DATA -->
 <div class="data">
 
 <div class="cell label">PM2.5</div>
@@ -153,8 +152,9 @@ AQI DISPLAY
 
 <script>
 
-/* URL PARAMETERS */
+/* GET URL PARAMETERS */
 const params = new URLSearchParams(window.location.search);
+
 const device = params.get("device") || "11";
 
 let name =
@@ -165,16 +165,12 @@ params.get("name") ||
 name = decodeURIComponent(name);
 document.getElementById("clientName").innerText = name;
 
-/* DATE FORMAT DD/MM/YYYY */
+/* DATE TIME */
 function updateTime(){
 const now = new Date();
 
-const day = String(now.getDate()).padStart(2, '0');
-const month = String(now.getMonth()+1).padStart(2, '0');
-const year = now.getFullYear();
-
 document.getElementById("date").innerText =
-day + "/" + month + "/" + year;
+now.toLocaleDateString();
 
 document.getElementById("time").innerText =
 now.toLocaleTimeString();
@@ -191,6 +187,7 @@ const response = await fetch(
 const data = await response.json();
 const p = data.parameter;
 
+/* SAFE VALUES */
 document.getElementById("pm25").innerText = p.pm25?.value ?? "--";
 document.getElementById("temp").innerText = p.temperature?.value ?? "--";
 document.getElementById("hum").innerText = p.humidity?.value ?? "--";
@@ -202,6 +199,7 @@ console.log("API ERROR", e);
 }
 }
 
+/* AUTO REFRESH */
 setInterval(updateTime, 1000);
 setInterval(fetchData, 20000);
 
