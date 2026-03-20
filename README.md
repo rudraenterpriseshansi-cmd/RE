@@ -41,12 +41,12 @@ height:14%;
 display:flex;
 align-items:center;
 overflow:hidden;
-border-bottom:0.2px solid #00aaff;
+border-bottom:0.2px solid #00aaff; /* ultra thin */
 }
 
 marquee{
 color:#00ff66;
-font-size:10vh; /* MAX SAFE */
+font-size:15vh; /* ALL TEXT SAME */
 font-weight:bold;
 width:100%;
 }
@@ -56,15 +56,14 @@ width:100%;
 height:10%;
 display:grid;
 grid-template-columns:1fr 1fr;
-border-bottom:0.2px solid #00aaff;
+border-bottom:0.2px solid #00aaff; /* ultra thin */
 }
 
 .date,.time{
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:8vh;
-font-weight:bold; /* BOLD */
+font-size:15vh; /* SAME SIZE */
 color:white;
 }
 
@@ -74,7 +73,7 @@ flex:1;
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
 grid-template-rows:repeat(5,1fr);
-gap:0.2px;
+gap:0.2px;                 /* ultra thin lines */
 background:#00aaff;
 }
 
@@ -84,26 +83,24 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-overflow:hidden;
 }
 
-/* TEXT */
+/* ALL TEXT SAME SIZE */
 .label{
 color:#ff66ff;
-font-size:6.5vh;
+font-size:15vh;
 font-weight:bold;
 }
 
 .value{
 color:#ffcc00;
-font-size:11vh; /* MAX BIG */
+font-size:15vh;
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
-font-size:6.5vh;
-font-weight:bold; /* BOLD */
+font-size:15vh;
 }
 
 </style>
@@ -169,7 +166,7 @@ params.get("name") ||
 name = decodeURIComponent(name);
 document.getElementById("clientName").innerText = name;
 
-/* DATE FORMAT DD/MM/YYYY */
+/* DATE TIME (DD/MM/YYYY) */
 function updateTime(){
 const now = new Date();
 
