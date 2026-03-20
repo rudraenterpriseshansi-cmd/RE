@@ -2,171 +2,212 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>AQI LED Display</title>
 
 <style>
 
-body{
-background:#000;
+/* RESET */
+*{
 margin:0;
-font-family:Arial;
-color:white;
-overflow:hidden;
-}
-
-.container{
-width:100vw;
-height:100vh;
-border:3px solid #00aaff;
+padding:0;
 box-sizing:border-box;
 }
 
-table{
-width:100%;
-height:100%;
-border-collapse:collapse;
-table-layout:fixed;
+body{
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-family:Arial, Helvetica, sans-serif;
+overflow:hidden;
 }
 
-td{
-border:2px solid #00aaff;
+/* 4:3 RATIO */
+.container{
+width:100vw;
+height:75vw;
+max-height:100vh;
+max-width:133.33vh;
+display:flex;
+flex-direction:column;
+}
+
+/* HEADER */
+.header{
+height:14%;
+display:flex;
+align-items:center;
+overflow:hidden;
+border-bottom:0.2px solid #00aaff; /* thinner */
+}
+
+marquee{
+color:#00ff66;
+font-size:12vh; /* bigger */
+font-weight:bold;
+width:100%;
+}
+
+/* DATE TIME */
+.datetime{
+height:10%;
+display:grid;
+grid-template-columns:1fr 1fr;
+border-bottom:0.2px solid #00aaff; /* thinner */
+}
+
+.date,.time{
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:12vh; /* bigger */
+color:white;
+}
+
+/* SINGLE LINE GRID (ULTRA THIN) */
+.data{
+flex:1;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+grid-template-rows:repeat(5,1fr);
+gap:0.2px;                 /* THIN BORDER */
+background:#00aaff;
+}
+
+.cell{
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
 text-align:center;
+}
+
+/* TEXT (BIG LED STYLE) */
+.label{
+color:#ff66ff;
+font-size:12vh; /* bigger */
 font-weight:bold;
 }
 
-.name{
-font-size:4vw;
-color:#00ff66;
-}
-
-.datetime{
-font-size:2.5vw;
-color:#ffffff;
-}
-
-.label{
-font-size:2.5vw;
-color:#ff66ff;
-}
-
 .value{
-font-size:3vw;
 color:#ffcc00;
+font-size:12vh;   /* MAIN BIG VALUE */
+font-weight:bold;
 }
 
 .unit{
-font-size:2vw;
 color:#00ffff;
+font-size:12vh; /* bigger */
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<table>
+<!-- HEADER -->
+<div class="header">
+<marquee id="clientName" scrollamount="1" scrolldelay="20">
+AQI DISPLAY
+</marquee>
+</div>
 
-<tr>
-<td colspan="3" class="name" id="clientName">CLIENT</td>
-</tr>
+<!-- DATE TIME -->
+<div class="datetime">
+<div class="date" id="date"></div>
+<div class="time" id="time"></div>
+</div>
 
-<tr>
-<td class="datetime" id="date"></td>
-<td class="datetime" colspan="2" id="time"></td>
-</tr>
+<!-- DATA GRID -->
+<div class="data">
 
-<tr>
-<td class="label">PM2.5</td>
-<td class="value" id="pm25">--</td>
-<td class="unit">µg/m³</td>
-</tr>
+<div class="cell label">PM2.5</div>
+<div class="cell value" id="pm25">--</div>
+<div class="cell unit">µg/m³</div>
 
-<tr>
-<td class="label">TEMP</td>
-<td class="value" id="temp">--</td>
-<td class="unit">°C</td>
-</tr>
+<div class="cell label">TEMP</div>
+<div class="cell value" id="temp">--</div>
+<div class="cell unit">°C</div>
 
-<tr>
-<td class="label">HUM</td>
-<td class="value" id="hum">--</td>
-<td class="unit">%</td>
-</tr>
+<div class="cell label">HUM</div>
+<div class="cell value" id="hum">--</div>
+<div class="cell unit">%</div>
 
-<tr>
-<td class="label">PM10</td>
-<td class="value" id="pm10">--</td>
-<td class="unit">µg/m³</td>
-</tr>
+<div class="cell label">PM10</div>
+<div class="cell value" id="pm10">--</div>
+<div class="cell unit">µg/m³</div>
 
-<tr>
-<td class="label">AQI</td>
-<td class="value" id="aqi">--</td>
-<td class="unit">---</td>
-</tr>
+<div class="cell label">AQI</div>
+<div class="cell value" id="aqi">--</div>
+<div class="cell unit">Index</div>
 
-</table>
+</div>
 
 </div>
 
 <script>
 
-// URL PARAMETERS
-const params = new URLSearchParams(window.location.search)
+/* URL PARAMETERS */
+const params = new URLSearchParams(window.location.search);
 
-const device = params.get("device") || "11"
-const name = params.get("name") || "AQI DEVICE"
+const device = params.get("device") || "11";
 
-document.getElementById("clientName").innerText = name
+let name =
+params.get("client") ||
+params.get("name") ||
+"AQI DISPLAY";
 
+name = decodeURIComponent(name);
 
-// DATE TIME
+/* SET NAME */
+document.getElementById("clientName").innerText = name;
+
+/* DATE TIME */
 function updateTime(){
-
-const now = new Date()
+const now = new Date();
 
 document.getElementById("date").innerText =
-now.toLocaleDateString()
+now.toLocaleDateString();
 
 document.getElementById("time").innerText =
-now.toLocaleTimeString()
-
+now.toLocaleTimeString();
 }
 
-
-// FETCH DATA
+/* FETCH DATA */
 async function fetchData(){
-
 try{
 
-const response = await fetch("https://aqi.rudraenterpriseshansi.workers.dev/?device="+device)
+const response = await fetch(
+"https://aqi.rudraenterpriseshansi.workers.dev/?device=" + device
+);
 
-const data = await response.json()
+const data = await response.json();
+const p = data.parameter;
 
-const p = data.parameter
+/* SAFE VALUES */
+document.getElementById("pm25").innerText = p.pm25?.value ?? "--";
+document.getElementById("temp").innerText = p.temperature?.value ?? "--";
+document.getElementById("hum").innerText = p.humidity?.value ?? "--";
+document.getElementById("pm10").innerText = p.pm10?.value ?? "--";
+document.getElementById("aqi").innerText = p.aqi?.value ?? "--";
 
-document.getElementById("pm25").innerText = p.pm25.value
-document.getElementById("temp").innerText = p.temperature.value
-document.getElementById("hum").innerText = p.humidity.value
-document.getElementById("pm10").innerText = p.pm10.value
-document.getElementById("aqi").innerText = p.aqi.value
-
+}catch(e){
+console.log("API ERROR", e);
 }
-catch(e){
-
-console.log("API ERROR",e)
-
-}
-
 }
 
-setInterval(updateTime,1000)
-setInterval(fetchData,20000)
+/* AUTO REFRESH */
+setInterval(updateTime, 1000);
+setInterval(fetchData, 20000);
 
-updateTime()
-fetchData()
+updateTime();
+fetchData();
 
 </script>
 
