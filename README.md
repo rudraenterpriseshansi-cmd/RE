@@ -46,7 +46,7 @@ border-bottom:0.2px solid #00aaff; /* thinner */
 
 marquee{
 color:#00ff66;
-font-size:12vh; /* bigger */
+font-size:15vh; /* bigger */
 font-weight:bold;
 width:100%;
 }
@@ -63,7 +63,7 @@ border-bottom:0.2px solid #00aaff; /* thinner */
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:12vh; /* bigger */
+font-size:15vh; /* bigger */
 color:white;
 }
 
@@ -88,19 +88,19 @@ text-align:center;
 /* TEXT (BIG LED STYLE) */
 .label{
 color:#ff66ff;
-font-size:12vh; /* bigger */
+font-size:15vh; /* bigger */
 font-weight:bold;
 }
 
 .value{
 color:#ffcc00;
-font-size:12vh;   /* MAIN BIG VALUE */
+font-size:15vh;   /* MAIN BIG VALUE */
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
-font-size:12vh; /* bigger */
+font-size:15vh; /* bigger */
 }
 
 </style>
