@@ -96,7 +96,7 @@ font-weight:bold;
 
 .value{
 color:#ffcc00;
-font-size:11vh;   /* MAX BIG */
+font-size:10vh;   /* MAX BIG */
 font-weight:bold;
 }
 
