@@ -37,33 +37,34 @@ flex-direction:column;
 
 /* HEADER */
 .header{
-height:14%;
+height:12%; /* reduced to give more space */
 display:flex;
 align-items:center;
 overflow:hidden;
-border-bottom:0.2px solid #00aaff; /* ultra thin */
+border-bottom:1px solid #00aaff; /* FIXED (0.2px not reliable) */
 }
 
 marquee{
 color:#00ff66;
-font-size:15vh; /* ALL TEXT SAME */
+font-size:8vh; /* balanced */
 font-weight:bold;
 width:100%;
 }
 
 /* DATE TIME */
 .datetime{
-height:10%;
+height:8%;
 display:grid;
 grid-template-columns:1fr 1fr;
-border-bottom:0.2px solid #00aaff; /* ultra thin */
+border-bottom:1px solid #00aaff;
 }
 
 .date,.time{
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:15vh; /* SAME SIZE */
+font-size:4vh;  /* reduced */
+font-weight:bold;
 color:white;
 }
 
@@ -73,7 +74,7 @@ flex:1;
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
 grid-template-rows:repeat(5,1fr);
-gap:0.2px;                 /* ultra thin lines */
+gap:1px;              /* FIXED */
 background:#00aaff;
 }
 
@@ -83,24 +84,26 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
+overflow:hidden;
 }
 
-/* ALL TEXT SAME SIZE */
+/* TEXT */
 .label{
 color:#ff66ff;
-font-size:15vh;
+font-size:5vh;
 font-weight:bold;
 }
 
 .value{
 color:#ffcc00;
-font-size:15vh;
+font-size:9vh;   /* MAX WITHOUT BREAK */
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
-font-size:15vh;
+font-size:5vh;
+font-weight:bold;
 }
 
 </style>
@@ -111,20 +114,17 @@ font-size:15vh;
 
 <div class="container">
 
-<!-- HEADER -->
 <div class="header">
 <marquee id="clientName" scrollamount="1" scrolldelay="20">
 AQI DISPLAY
 </marquee>
 </div>
 
-<!-- DATE TIME -->
 <div class="datetime">
 <div class="date" id="date"></div>
 <div class="time" id="time"></div>
 </div>
 
-<!-- DATA -->
 <div class="data">
 
 <div class="cell label">PM2.5</div>
@@ -155,7 +155,6 @@ AQI DISPLAY
 
 /* URL PARAMETERS */
 const params = new URLSearchParams(window.location.search);
-
 const device = params.get("device") || "11";
 
 let name =
@@ -166,7 +165,7 @@ params.get("name") ||
 name = decodeURIComponent(name);
 document.getElementById("clientName").innerText = name;
 
-/* DATE TIME (DD/MM/YYYY) */
+/* DATE FORMAT DD/MM/YYYY */
 function updateTime(){
 const now = new Date();
 
@@ -192,7 +191,6 @@ const response = await fetch(
 const data = await response.json();
 const p = data.parameter;
 
-/* SAFE VALUES */
 document.getElementById("pm25").innerText = p.pm25?.value ?? "--";
 document.getElementById("temp").innerText = p.temperature?.value ?? "--";
 document.getElementById("hum").innerText = p.humidity?.value ?? "--";
@@ -204,7 +202,6 @@ console.log("API ERROR", e);
 }
 }
 
-/* AUTO REFRESH */
 setInterval(updateTime, 1000);
 setInterval(fetchData, 20000);
 
