@@ -25,13 +25,12 @@ font-family:Arial, Helvetica, sans-serif;
 overflow:hidden;
 }
 
-/* 4:3 RATIO CONTAINER */
+/* 4:3 RATIO */
 .container{
 width:100vw;
-height:75vw; /* 4:3 ratio */
+height:75vw;
 max-height:100vh;
 max-width:133.33vh;
-border:2px solid #00aaff;
 display:flex;
 flex-direction:column;
 }
@@ -41,8 +40,8 @@ flex-direction:column;
 height:14%;
 display:flex;
 align-items:center;
-border-bottom:2px solid #00aaff;
 overflow:hidden;
+border-bottom:2px solid #00aaff;
 }
 
 marquee{
@@ -68,14 +67,14 @@ font-size:3vh;
 color:white;
 }
 
-/* DATA GRID */
+/* SINGLE LINE GRID */
 .data{
 flex:1;
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
 grid-template-rows:repeat(5,1fr);
 gap:2px;
-background:#00aaff;
+background:#00aaff; /* line color */
 }
 
 .cell{
@@ -114,7 +113,9 @@ font-size:2.5vh;
 
 <!-- HEADER -->
 <div class="header">
-<marquee id="clientName">AQI DISPLAY</marquee>
+<marquee id="clientName" scrollamount="1" scrolldelay="20" behavior="scroll" direction="left">
+AQI DISPLAY
+</marquee>
 </div>
 
 <!-- DATE TIME -->
@@ -123,7 +124,7 @@ font-size:2.5vh;
 <div class="time" id="time"></div>
 </div>
 
-<!-- DATA -->
+<!-- DATA GRID -->
 <div class="data">
 
 <div class="cell label">PM2.5</div>
@@ -152,7 +153,7 @@ font-size:2.5vh;
 
 <script>
 
-/* GET URL PARAMETERS */
+/* URL PARAMETERS */
 const params = new URLSearchParams(window.location.search);
 
 const device = params.get("device") || "11";
@@ -163,6 +164,8 @@ params.get("name") ||
 "AQI DISPLAY";
 
 name = decodeURIComponent(name);
+
+/* SET NAME */
 document.getElementById("clientName").innerText = name;
 
 /* DATE TIME */
