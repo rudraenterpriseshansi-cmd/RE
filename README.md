@@ -41,12 +41,12 @@ height:14%;
 display:flex;
 align-items:center;
 overflow:hidden;
-border-bottom:0.2px solid #00aaff; /* thinner */
+border-bottom:0.2px solid #00aaff;
 }
 
 marquee{
 color:#00ff66;
-font-size:15vh; /* bigger */
+font-size:15vh; /* MAX SAFE */
 font-weight:bold;
 width:100%;
 }
@@ -56,24 +56,25 @@ width:100%;
 height:10%;
 display:grid;
 grid-template-columns:1fr 1fr;
-border-bottom:0.2px solid #00aaff; /* thinner */
+border-bottom:0.2px solid #00aaff;
 }
 
 .date,.time{
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:15vh; /* bigger */
+font-size:12vh;
+font-weight:bold; /* BOLD */
 color:white;
 }
 
-/* SINGLE LINE GRID (ULTRA THIN) */
+/* GRID */
 .data{
 flex:1;
 display:grid;
 grid-template-columns:1fr 1fr 1fr;
 grid-template-rows:repeat(5,1fr);
-gap:0.2px;                 /* THIN BORDER */
+gap:0.2px;
 background:#00aaff;
 }
 
@@ -83,24 +84,26 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
+overflow:hidden;
 }
 
-/* TEXT (BIG LED STYLE) */
+/* TEXT */
 .label{
 color:#ff66ff;
-font-size:15vh; /* bigger */
+font-size:12vh;
 font-weight:bold;
 }
 
 .value{
 color:#ffcc00;
-font-size:15vh;   /* MAIN BIG VALUE */
+font-size:12vh; /* MAX BIG */
 font-weight:bold;
 }
 
 .unit{
 color:#00ffff;
-font-size:15vh; /* bigger */
+font-size:12vh;
+font-weight:bold; /* BOLD */
 }
 
 </style>
@@ -124,7 +127,7 @@ AQI DISPLAY
 <div class="time" id="time"></div>
 </div>
 
-<!-- DATA GRID -->
+<!-- DATA -->
 <div class="data">
 
 <div class="cell label">PM2.5</div>
@@ -164,16 +167,18 @@ params.get("name") ||
 "AQI DISPLAY";
 
 name = decodeURIComponent(name);
-
-/* SET NAME */
 document.getElementById("clientName").innerText = name;
 
-/* DATE TIME */
+/* DATE FORMAT DD/MM/YYYY */
 function updateTime(){
 const now = new Date();
 
+const day = String(now.getDate()).padStart(2, '0');
+const month = String(now.getMonth()+1).padStart(2, '0');
+const year = now.getFullYear();
+
 document.getElementById("date").innerText =
-now.toLocaleDateString();
+day + "/" + month + "/" + year;
 
 document.getElementById("time").innerText =
 now.toLocaleTimeString();
