@@ -47,9 +47,9 @@ html,body{
 }
 
 .company{
-    color:#ffffff;
+    color:#yellow;
     font-size:6.2vw;
-    font-weight:900;
+    font-weight:128;
     letter-spacing:1px;
     white-space:nowrap;
 }
@@ -76,14 +76,14 @@ html,body{
 .parameter{
     color:#ffffff;
     font-size:5.2vw;
-    font-weight:900;
+    font-weight:128;
     line-height:1;
 }
 
 .value{
     color:#ff0000;
     font-size:7.5vw;
-    font-weight:900;
+    font-weight:128;
     line-height:1;
     margin-top:5%;
 }
