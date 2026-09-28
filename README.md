@@ -1,67 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 
-<title>Rudra Enterprises - P10 RGB 128x96</title>
-
-<meta name="viewport"
-      content="width=device-width,
-               height=device-height,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+<title>RUDRA ENTERPRISES</title>
 
 <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 html,
 body{
-    width:100%;
-    height:100%;
-
     margin:0;
     padding:0;
-
-    overflow:hidden;
-
+    width:100%;
+    height:100%;
     background:#000;
+    overflow:hidden;
 }
-
-
-/* =========================================
-   FULL SCREEN
-   ========================================= */
 
 #screen{
-
     width:100vw;
     height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
     background:#000;
 
-    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-
-/* =========================================
-   EXACT P10 RGB DMD
-   128 x 96 PIXELS
-   ========================================= */
-
-#ledCanvas{
-
+canvas{
     width:128px;
     height:96px;
 
@@ -70,111 +36,71 @@ body{
     background:#000;
 
     image-rendering:pixelated;
-
     image-rendering:crisp-edges;
 }
 
 </style>
-
 </head>
-
 
 <body>
 
 <div id="screen">
 
-    <!-- EXACT 128 x 96 PIXELS -->
-
-    <canvas
-        id="ledCanvas"
-        width="128"
-        height="96">
-    </canvas>
+<canvas
+    id="display"
+    width="128"
+    height="96">
+</canvas>
 
 </div>
 
 
 <script>
 
-/* =================================================
-   P10 RGB DMD RESOLUTION
-   ================================================= */
-
-const WIDTH  = 128;
-const HEIGHT = 96;
-
-
-/* =================================================
-   CANVAS
-   ================================================= */
-
-const canvas =
-    document.getElementById("ledCanvas");
-
-const ctx =
-    canvas.getContext("2d");
+const canvas = document.getElementById("display");
+const ctx = canvas.getContext("2d");
 
 ctx.imageSmoothingEnabled = false;
 
 
-/* =================================================
-   RGB COLORS
-   ================================================= */
+/* ==================================================
+   DATA
+   ================================================== */
 
-const BLACK = "#000000";
+let PM25 = 85;
+let PM10 = 152;
 
-const WHITE = "#FFFFFF";
-
-const RED = "#FF0000";
-
-const BLUE = "#009CFF";
+let TEMPERATURE = 23.0;
+let HUMIDITY = 35.0;
 
 
-/* =================================================
-   LIVE DATA
-   ================================================= */
+/* ==================================================
+   DRAW
+   ================================================== */
 
-let data = {
+function draw(){
 
-    pm25: 85,
+    /* BLACK BACKGROUND */
 
-    pm10: 152,
-
-    temperature: 23.0,
-
-    humidity: 35.0
-
-};
-
-
-/* =================================================
-   DRAW DISPLAY
-   ================================================= */
-
-function drawDisplay(){
-
-    /* -----------------------------------------
-       BLACK BACKGROUND
-       ----------------------------------------- */
-
-    ctx.fillStyle = BLACK;
+    ctx.fillStyle = "#000000";
 
     ctx.fillRect(
         0,
         0,
-        WIDTH,
-        HEIGHT
+        128,
+        96
     );
 
 
-    /* =========================================
+    /* =================================================
        RUDRA ENTERPRISES
-       ========================================= */
+       NO RE
+       NO LINE
+       ================================================= */
 
-    ctx.fillStyle = WHITE;
+    ctx.fillStyle = "#FFFFFF";
 
-    ctx.font =
-        "900 10px Arial";
+    ctx.font = "bold 9px Arial";
 
     ctx.textAlign = "center";
 
@@ -187,18 +113,16 @@ function drawDisplay(){
     );
 
 
-    /* =========================================
+    /* =================================================
        PM2.5 TITLE
-       
        MOVED DOWN 10 PIXELS
-       ========================================= */
+       ================================================= */
 
     ctx.textAlign = "left";
 
-    ctx.font =
-        "900 9px Arial";
+    ctx.font = "bold 8px Arial";
 
-    ctx.fillStyle = WHITE;
+    ctx.fillStyle = "#FFFFFF";
 
     ctx.fillText(
         "PM2.5",
@@ -207,9 +131,9 @@ function drawDisplay(){
     );
 
 
-    /* =========================================
+    /* =================================================
        PM10 TITLE
-       ========================================= */
+       ================================================= */
 
     ctx.fillText(
         "PM10",
@@ -218,54 +142,45 @@ function drawDisplay(){
     );
 
 
-    /* =========================================
+    /* =================================================
        PM2.5 VALUE
-       
-       MOVED DOWN 10 PIXELS
-       ========================================= */
+       ================================================= */
 
-    ctx.fillStyle = RED;
+    ctx.font = "bold 20px Arial";
 
-    ctx.font =
-        "900 21px Arial";
+    ctx.fillStyle = "#FF0000";
 
     ctx.fillText(
-        data.pm25,
+        PM25,
         12,
         42
     );
 
 
-    /* =========================================
+    /* =================================================
        PM10 VALUE
-       ========================================= */
+       ================================================= */
 
     ctx.fillText(
-        data.pm10,
+        PM10,
         55,
         42
     );
 
 
-    /* =========================================
-       PM2.5 UNIT
-       ========================================= */
+    /* =================================================
+       UNITS
+       ================================================= */
 
-    ctx.fillStyle = WHITE;
+    ctx.font = "6px Arial";
 
-    ctx.font =
-        "6px Arial";
+    ctx.fillStyle = "#FFFFFF";
 
     ctx.fillText(
         "µg/m3",
         13,
         60
     );
-
-
-    /* =========================================
-       PM10 UNIT
-       ========================================= */
 
     ctx.fillText(
         "µg/m3",
@@ -274,11 +189,11 @@ function drawDisplay(){
     );
 
 
-    /* =========================================
+    /* =================================================
        TEMPERATURE RED DOT
-       ========================================= */
+       ================================================= */
 
-    ctx.fillStyle = RED;
+    ctx.fillStyle = "#FF0000";
 
     ctx.beginPath();
 
@@ -295,29 +210,26 @@ function drawDisplay(){
     ctx.fill();
 
 
-    /* =========================================
+    /* =================================================
        TEMPERATURE
-       ========================================= */
+       ================================================= */
 
-    ctx.fillStyle = WHITE;
+    ctx.fillStyle = "#FFFFFF";
 
-    ctx.font =
-        "7px Arial";
+    ctx.font = "7px Arial";
 
     ctx.fillText(
-        Number(data.temperature)
-        .toFixed(1) + "°C",
-
+        TEMPERATURE.toFixed(1) + "°C",
         94,
         22
     );
 
 
-    /* =========================================
+    /* =================================================
        HUMIDITY BLUE DOT
-       ========================================= */
+       ================================================= */
 
-    ctx.fillStyle = BLUE;
+    ctx.fillStyle = "#009CFF";
 
     ctx.beginPath();
 
@@ -334,122 +246,89 @@ function drawDisplay(){
     ctx.fill();
 
 
-    /* =========================================
+    /* =================================================
        HUMIDITY
-       ========================================= */
+       ================================================= */
 
-    ctx.fillStyle = WHITE;
+    ctx.fillStyle = "#FFFFFF";
+
+    ctx.font = "7px Arial";
 
     ctx.fillText(
-        Number(data.humidity)
-        .toFixed(1) + "%",
-
+        HUMIDITY.toFixed(1) + "%",
         94,
         29
     );
 
 
-    /* =========================================
+    /* =================================================
        DATE
-       ========================================= */
+       ================================================= */
 
     const now = new Date();
 
     const day =
-        String(
-            now.getDate()
-        ).padStart(2,"0");
-
+        String(now.getDate()).padStart(2,"0");
 
     const months = [
-
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
-
+        "Jan","Feb","Mar","Apr",
+        "May","Jun","Jul","Aug",
+        "Sep","Oct","Nov","Dec"
     ];
-
 
     const month =
         months[now.getMonth()];
 
-
     const year =
         now.getFullYear();
 
-
-    const dateText =
-        day +
-        "|" +
-        month +
-        "|" +
+    const date =
+        day + "|" +
+        month + "|" +
         year;
 
 
-    ctx.fillStyle = WHITE;
+    ctx.fillStyle = "#FFFFFF";
 
-    ctx.font =
-        "6px Arial";
+    ctx.font = "6px Arial";
 
     ctx.textAlign = "right";
 
     ctx.fillText(
-        dateText,
+        date,
         119,
         79
     );
 
 
-    /* =========================================
+    /* =================================================
        TIME
-       ========================================= */
+       ================================================= */
 
     let hours =
         now.getHours();
-
 
     const minutes =
         String(
             now.getMinutes()
         ).padStart(2,"0");
 
-
     const ampm =
         hours >= 12
         ? "PM"
         : "AM";
 
-
     hours =
         hours % 12;
 
-
     if(hours === 0){
-
         hours = 12;
-
     }
 
-
-    const timeText =
-        hours +
-        ":" +
-        minutes +
-        " " +
-        ampm;
-
-
     ctx.fillText(
-        timeText,
+        hours + ":" +
+        minutes + " " +
+        ampm,
         119,
         86
     );
@@ -457,19 +336,14 @@ function drawDisplay(){
 }
 
 
-/* =================================================
-   FIRST DISPLAY
-   ================================================= */
+/* ==================================================
+   START
+   ================================================== */
 
-drawDisplay();
-
-
-/* =================================================
-   CLOCK UPDATE
-   ================================================= */
+draw();
 
 setInterval(
-    drawDisplay,
+    draw,
     1000
 );
 
