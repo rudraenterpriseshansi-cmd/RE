@@ -1,4 +1,9 @@
-<title>RUDRA ENTERPRISES - P10 RGB DMD</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+      
+      <title>RUDRA ENTERPRISES - P10 RGB DMD</title>
 
 <meta name="viewport"
       content="width=device-width,
@@ -140,20 +145,6 @@ const GREY = "#777777";
    ================================================== */
 
 function drawDisplay(){
-
-    /* ----------------------------------------------
-       BLACK BACKGROUND
-       ---------------------------------------------- */
-
-    ctx.fillStyle = BLACK;
-
-    ctx.fillRect(
-        0,
-        0,
-        WIDTH,
-        HEIGHT
-    );
-
 
     /* ----------------------------------------------
        COMPANY NAME
