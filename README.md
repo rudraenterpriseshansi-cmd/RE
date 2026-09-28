@@ -2,313 +2,350 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rudra Enterprises - AQI Display</title>
+
+<title>RUDRA ENTERPRISES</title>
 
 <style>
-*{
+
+html,
+body{
     margin:0;
     padding:0;
-    box-sizing:border-box;
-}
-
-html,body{
     width:100%;
     height:100%;
-    overflow:hidden;
     background:#000;
-    font-family:Arial, Helvetica, sans-serif;
+    overflow:hidden;
 }
 
-.display{
+#screen{
     width:100vw;
     height:100vh;
     background:#000;
-    color:#fff;
+
     display:flex;
-    flex-direction:column;
     justify-content:center;
-    padding:5px;
-}
-
-/* HEADER */
-.header{
-    height:20%;
-    display:flex;
     align-items:center;
-    justify-content:center;
-    border-bottom:2px solid #333;
 }
 
-.company{
-    color:#00ff00;
-    font-size:clamp(22px,5vw,60px);
-    font-weight:bold;
-    letter-spacing:2px;
+canvas{
+    width:128px;
+    height:96px;
+
+    display:block;
+
+    background:#000;
+
+    image-rendering:pixelated;
+    image-rendering:crisp-edges;
 }
 
-/* AQI */
-.aqi-section{
-    height:38%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:25px;
-}
-
-.aqi-label{
-    color:#fff;
-    font-size:clamp(25px,7vw,75px);
-    font-weight:bold;
-}
-
-.aqi-value{
-    color:#00ff00;
-    font-size:clamp(50px,14vw,150px);
-    font-weight:bold;
-    line-height:1;
-}
-
-/* PM */
-.pm-section{
-    height:25%;
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    border-top:2px solid #333;
-}
-
-.pm-box{
-    text-align:center;
-    width:48%;
-}
-
-.pm-title{
-    font-size:clamp(20px,5vw,55px);
-    font-weight:bold;
-}
-
-.pm-value{
-    font-size:clamp(30px,8vw,85px);
-    font-weight:bold;
-}
-
-.pm25 .pm-title,
-.pm25 .pm-value{
-    color:#00ffff;
-}
-
-.pm10 .pm-title,
-.pm10 .pm-value{
-    color:#ffff00;
-}
-
-/* DATE TIME */
-.footer{
-    height:17%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-}
-
-.date{
-    color:#fff;
-    font-size:clamp(15px,3vw,35px);
-}
-
-.status{
-    color:#00ff00;
-    font-size:clamp(12px,2.5vw,28px);
-    margin-top:5px;
-}
-
-/* ERROR */
-.error{
-    color:red;
-}
 </style>
 </head>
 
 <body>
 
-<div class="display">
+<div id="screen">
 
-    <div class="header">
-        <div class="company">RUDRA ENTERPRISES</div>
-    </div>
-
-    <div class="aqi-section">
-        <div class="aqi-label">AQI</div>
-        <div id="aqi" class="aqi-value">--</div>
-    </div>
-
-    <div class="pm-section">
-
-        <div class="pm-box pm25">
-            <div class="pm-title">PM2.5</div>
-            <div id="pm25" class="pm-value">--</div>
-        </div>
-
-        <div class="pm-box pm10">
-            <div class="pm-title">PM10</div>
-            <div id="pm10" class="pm-value">--</div>
-        </div>
-
-    </div>
-
-    <div class="footer">
-        <div id="date" class="date">--/--/----</div>
-        <div id="status" class="status">Connecting...</div>
-    </div>
+<canvas
+    id="display"
+    width="128"
+    height="96">
+</canvas>
 
 </div>
 
+
 <script>
 
-/* ==============================
-   SAMASTH API
-   ============================== */
+const canvas = document.getElementById("display");
+const ctx = canvas.getContext("2d");
 
-const DEVICE_ID = "AQI238";
-
-const API_URL =
-    "https://integration.samasth.io/api/AQI/display?device="
-    + DEVICE_ID +
-    "&showAQI=true";
+ctx.imageSmoothingEnabled = false;
 
 
-/* ==============================
-   GET DATA
-   ============================== */
+/* ==================================================
+   DATA
+   ================================================== */
 
-async function getAQIData(){
+let PM25 = 85;
+let PM10 = 152;
 
-    try{
-
-        const response = await fetch(API_URL, {
-            method: "GET",
-            cache: "no-store"
-        });
-
-        if(!response.ok){
-            throw new Error("API Error " + response.status);
-        }
-
-        const data = await response.json();
-
-        console.log("Samasth API Response:", data);
-
-        updateDisplay(data);
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        document.getElementById("status").innerHTML =
-            "API CONNECTION ERROR";
-
-        document.getElementById("status").className =
-            "status error";
-    }
-
-}
+let TEMPERATURE = 23.0;
+let HUMIDITY = 35.0;
 
 
-/* ==============================
-   UPDATE DISPLAY
-   ============================== */
+/* ==================================================
+   DRAW
+   ================================================== */
 
-function updateDisplay(data){
+function draw(){
 
-    /*
-       These fields may need adjustment
-       depending on the exact JSON response
-       returned by Samasth.
-    */
+    /* BLACK BACKGROUND */
 
-    let aqi =
-        data.AQI ??
-        data.aqi ??
-        data.Aqi ??
-        "--";
+    ctx.fillStyle = "#000000";
 
-    let pm25 =
-        data.PM2_5 ??
-        data.PM25 ??
-        data.pm25 ??
-        data["PM2.5"] ??
-        "--";
-
-    let pm10 =
-        data.PM10 ??
-        data.pm10 ??
-        "--";
+    ctx.fillRect(
+        0,
+        0,
+        128,
+        96
+    );
 
 
-    document.getElementById("aqi").innerHTML = aqi;
-    document.getElementById("pm25").innerHTML = pm25;
-    document.getElementById("pm10").innerHTML = pm10;
+    /* =================================================
+       RUDRA ENTERPRISES
+       NO RE
+       NO LINE
+       ================================================= */
 
-    document.getElementById("status").innerHTML =
-        "LIVE DATA";
+    ctx.fillStyle = "#FFFFFF";
 
-    updateDateTime();
+    ctx.font = "bold 9px Arial";
 
-}
+    ctx.textAlign = "center";
+
+    ctx.textBaseline = "top";
+
+    ctx.fillText(
+        "RUDRA ENTERPRISES",
+        64,
+        3
+    );
 
 
-/* ==============================
-   DATE / TIME
-   ============================== */
+    /* =================================================
+       PM2.5 TITLE
+       MOVED DOWN 10 PIXELS
+       ================================================= */
 
-function updateDateTime(){
+    ctx.textAlign = "left";
+
+    ctx.font = "bold 8px Arial";
+
+    ctx.fillStyle = "#FFFFFF";
+
+    ctx.fillText(
+        "PM2.5",
+        12,
+        32
+    );
+
+
+    /* =================================================
+       PM10 TITLE
+       ================================================= */
+
+    ctx.fillText(
+        "PM10",
+        55,
+        32
+    );
+
+
+    /* =================================================
+       PM2.5 VALUE
+       ================================================= */
+
+    ctx.font = "bold 20px Arial";
+
+    ctx.fillStyle = "#FF0000";
+
+    ctx.fillText(
+        PM25,
+        12,
+        42
+    );
+
+
+    /* =================================================
+       PM10 VALUE
+       ================================================= */
+
+    ctx.fillText(
+        PM10,
+        55,
+        42
+    );
+
+
+    /* =================================================
+       UNITS
+       ================================================= */
+
+    ctx.font = "6px Arial";
+
+    ctx.fillStyle = "#FFFFFF";
+
+    ctx.fillText(
+        "µg/m3",
+        13,
+        60
+    );
+
+    ctx.fillText(
+        "µg/m3",
+        57,
+        60
+    );
+
+
+    /* =================================================
+       TEMPERATURE RED DOT
+       ================================================= */
+
+    ctx.fillStyle = "#FF0000";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        89,
+        27,
+        3,
+        5,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* =================================================
+       TEMPERATURE
+       ================================================= */
+
+    ctx.fillStyle = "#FFFFFF";
+
+    ctx.font = "7px Arial";
+
+    ctx.fillText(
+        TEMPERATURE.toFixed(1) + "°C",
+        94,
+        22
+    );
+
+
+    /* =================================================
+       HUMIDITY BLUE DOT
+       ================================================= */
+
+    ctx.fillStyle = "#009CFF";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        89,
+        34,
+        3,
+        5,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* =================================================
+       HUMIDITY
+       ================================================= */
+
+    ctx.fillStyle = "#FFFFFF";
+
+    ctx.font = "7px Arial";
+
+    ctx.fillText(
+        HUMIDITY.toFixed(1) + "%",
+        94,
+        29
+    );
+
+
+    /* =================================================
+       DATE
+       ================================================= */
 
     const now = new Date();
 
     const day =
         String(now.getDate()).padStart(2,"0");
 
+    const months = [
+        "Jan","Feb","Mar","Apr",
+        "May","Jun","Jul","Aug",
+        "Sep","Oct","Nov","Dec"
+    ];
+
     const month =
-        String(now.getMonth()+1).padStart(2,"0");
+        months[now.getMonth()];
 
     const year =
         now.getFullYear();
 
-    const hours =
-        String(now.getHours()).padStart(2,"0");
+    const date =
+        day + "|" +
+        month + "|" +
+        year;
+
+
+    ctx.fillStyle = "#FFFFFF";
+
+    ctx.font = "6px Arial";
+
+    ctx.textAlign = "right";
+
+    ctx.fillText(
+        date,
+        119,
+        79
+    );
+
+
+    /* =================================================
+       TIME
+       ================================================= */
+
+    let hours =
+        now.getHours();
 
     const minutes =
-        String(now.getMinutes()).padStart(2,"0");
+        String(
+            now.getMinutes()
+        ).padStart(2,"0");
 
-    const seconds =
-        String(now.getSeconds()).padStart(2,"0");
+    const ampm =
+        hours >= 12
+        ? "PM"
+        : "AM";
 
-    document.getElementById("date").innerHTML =
-        day + "/" +
-        month + "/" +
-        year +
-        "  " +
+    hours =
+        hours % 12;
+
+    if(hours === 0){
+        hours = 12;
+    }
+
+    ctx.fillText(
         hours + ":" +
-        minutes + ":" +
-        seconds;
+        minutes + " " +
+        ampm,
+        119,
+        86
+    );
+
 }
 
 
-/* ==============================
-   AUTO REFRESH
-   ============================== */
+/* ==================================================
+   START
+   ================================================== */
 
-getAQIData();
+draw();
 
-/* Refresh API every 10 seconds */
-setInterval(getAQIData,10000);
-
-/* Clock */
-setInterval(updateDateTime,1000);
-
-updateDateTime();
+setInterval(
+    draw,
+    1000
+);
 
 </script>
 
