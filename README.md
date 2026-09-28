@@ -56,8 +56,8 @@ body{
 
 #screen{
 
-    width:100vw;
-    height:100vh;
+    width:128vw;
+    height:96vh;
 
     display:flex;
 
@@ -167,7 +167,7 @@ function drawDisplay(){
     ctx.fillStyle = WHITE;
 
     ctx.font =
-        "900 10px Arial";
+        "128 10px Arial";
 
     ctx.textAlign = "center";
 
@@ -213,7 +213,7 @@ function drawDisplay(){
     ctx.textAlign = "left";
 
     ctx.font =
-        "900 9px Arial";
+        "128 9px Arial";
 
     ctx.fillText(
         "PM2.5",
@@ -240,7 +240,7 @@ function drawDisplay(){
     ctx.fillStyle = RED;
 
     ctx.font =
-        "900 21px Arial";
+        "128 21px Arial";
 
     ctx.fillText(
         data.pm25,
