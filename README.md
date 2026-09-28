@@ -1,454 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-
-<title>RUDRA ENTERPRISES</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rudra Enterprises - AQI Display</title>
 
 <style>
-
-/* =========================================
-   RESET
-   ========================================= */
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-
-/* =========================================
-   PAGE
-   ========================================= */
-
-html,
-body{
+html,body{
     width:100%;
     height:100%;
-
-    margin:0;
-    padding:0;
-
     overflow:hidden;
-
     background:#000;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
-
-/* =========================================
-   SCREEN
-   ========================================= */
-
-#screen{
+.display{
     width:100vw;
     height:100vh;
-
+    background:#000;
+    color:#fff;
     display:flex;
-
+    flex-direction:column;
     justify-content:center;
+    padding:5px;
+}
+
+/* HEADER */
+.header{
+    height:20%;
+    display:flex;
     align-items:center;
-
-    background:#000;
-
-    overflow:hidden;
+    justify-content:center;
+    border-bottom:2px solid #333;
 }
 
-
-/* =========================================
-   P10 RGB DMD
-   EXACT 128 x 96 PIXELS
-   ========================================= */
-
-#display{
-
-    width:128px;
-    height:96px;
-
-    display:block;
-
-    background:#000;
-
-    image-rendering:pixelated;
-    image-rendering:crisp-edges;
+.company{
+    color:#00ff00;
+    font-size:clamp(22px,5vw,60px);
+    font-weight:bold;
+    letter-spacing:2px;
 }
 
+/* AQI */
+.aqi-section{
+    height:38%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:25px;
+}
+
+.aqi-label{
+    color:#fff;
+    font-size:clamp(25px,7vw,75px);
+    font-weight:bold;
+}
+
+.aqi-value{
+    color:#00ff00;
+    font-size:clamp(50px,14vw,150px);
+    font-weight:bold;
+    line-height:1;
+}
+
+/* PM */
+.pm-section{
+    height:25%;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    border-top:2px solid #333;
+}
+
+.pm-box{
+    text-align:center;
+    width:48%;
+}
+
+.pm-title{
+    font-size:clamp(20px,5vw,55px);
+    font-weight:bold;
+}
+
+.pm-value{
+    font-size:clamp(30px,8vw,85px);
+    font-weight:bold;
+}
+
+.pm25 .pm-title,
+.pm25 .pm-value{
+    color:#00ffff;
+}
+
+.pm10 .pm-title,
+.pm10 .pm-value{
+    color:#ffff00;
+}
+
+/* DATE TIME */
+.footer{
+    height:17%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+}
+
+.date{
+    color:#fff;
+    font-size:clamp(15px,3vw,35px);
+}
+
+.status{
+    color:#00ff00;
+    font-size:clamp(12px,2.5vw,28px);
+    margin-top:5px;
+}
+
+/* ERROR */
+.error{
+    color:red;
+}
 </style>
-
 </head>
-
 
 <body>
 
-<div id="screen">
+<div class="display">
 
-<canvas
-    id="display"
-    width="128"
-    height="96">
-</canvas>
+    <div class="header">
+        <div class="company">RUDRA ENTERPRISES</div>
+    </div>
+
+    <div class="aqi-section">
+        <div class="aqi-label">AQI</div>
+        <div id="aqi" class="aqi-value">--</div>
+    </div>
+
+    <div class="pm-section">
+
+        <div class="pm-box pm25">
+            <div class="pm-title">PM2.5</div>
+            <div id="pm25" class="pm-value">--</div>
+        </div>
+
+        <div class="pm-box pm10">
+            <div class="pm-title">PM10</div>
+            <div id="pm10" class="pm-value">--</div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div id="date" class="date">--/--/----</div>
+        <div id="status" class="status">Connecting...</div>
+    </div>
 
 </div>
 
-
 <script>
 
-/* =========================================
-   CANVAS
-   ========================================= */
+/* ==============================
+   SAMASTH API
+   ============================== */
 
-const canvas =
-    document.getElementById("display");
+const DEVICE_ID = "AQI238";
 
-const ctx =
-    canvas.getContext("2d");
+const API_URL =
+    "https://integration.samasth.io/api/AQI/display?device="
+    + DEVICE_ID +
+    "&showAQI=true";
 
-ctx.imageSmoothingEnabled = false;
 
+/* ==============================
+   GET DATA
+   ============================== */
 
-/* =========================================
-   FIXED DMD SIZE
-   ========================================= */
+async function getAQIData(){
 
-const W = 128;
-const H = 96;
+    try{
 
+        const response = await fetch(API_URL, {
+            method: "GET",
+            cache: "no-store"
+        });
 
-/* =========================================
-   COLORS
-   ========================================= */
+        if(!response.ok){
+            throw new Error("API Error " + response.status);
+        }
 
-const BLACK = "#000000";
-const WHITE = "#FFFFFF";
-const RED   = "#FF0000";
-const BLUE  = "#0099FF";
+        const data = await response.json();
 
+        console.log("Samasth API Response:", data);
 
-/* =========================================
-   SENSOR DATA
-   ========================================= */
+        updateDisplay(data);
 
-let pm25 = 85;
-let pm10 = 152;
+    }
+    catch(error){
 
-let temperature = 23.0;
-let humidity = 35.0;
+        console.error(error);
 
+        document.getElementById("status").innerHTML =
+            "API CONNECTION ERROR";
 
-/* =========================================
-   DRAW DISPLAY
-   ========================================= */
+        document.getElementById("status").className =
+            "status error";
+    }
 
-function drawDisplay(){
+}
 
-    /* -----------------------------------------
-       CLEAR DISPLAY
-       ----------------------------------------- */
 
-    ctx.fillStyle = BLACK;
+/* ==============================
+   UPDATE DISPLAY
+   ============================== */
 
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
+function updateDisplay(data){
 
+    /*
+       These fields may need adjustment
+       depending on the exact JSON response
+       returned by Samasth.
+    */
 
-    /* =========================================
-       COMPANY NAME
-       ========================================= */
+    let aqi =
+        data.AQI ??
+        data.aqi ??
+        data.Aqi ??
+        "--";
 
-    ctx.fillStyle = WHITE;
+    let pm25 =
+        data.PM2_5 ??
+        data.PM25 ??
+        data.pm25 ??
+        data["PM2.5"] ??
+        "--";
 
-    ctx.font =
-        "bold 9px Arial";
+    let pm10 =
+        data.PM10 ??
+        data.pm10 ??
+        "--";
 
-    ctx.textAlign = "center";
 
-    ctx.textBaseline = "top";
+    document.getElementById("aqi").innerHTML = aqi;
+    document.getElementById("pm25").innerHTML = pm25;
+    document.getElementById("pm10").innerHTML = pm10;
 
-    ctx.fillText(
-        "RUDRA ENTERPRISES",
-        64,
-        3
-    );
+    document.getElementById("status").innerHTML =
+        "LIVE DATA";
 
+    updateDateTime();
 
-    /* =========================================
-       PM2.5 TITLE
-       ========================================= */
+}
 
-    ctx.textAlign = "left";
 
-    ctx.font =
-        "bold 8px Arial";
+/* ==============================
+   DATE / TIME
+   ============================== */
 
-    ctx.fillStyle = WHITE;
-
-    ctx.fillText(
-        "PM2.5",
-        12,
-        32
-    );
-
-
-    /* =========================================
-       PM10 TITLE
-       ========================================= */
-
-    ctx.fillText(
-        "PM10",
-        55,
-        32
-    );
-
-
-    /* =========================================
-       PM2.5 VALUE
-       ========================================= */
-
-    ctx.font =
-        "bold 20px Arial";
-
-    ctx.fillStyle = RED;
-
-    ctx.fillText(
-        pm25,
-        12,
-        42
-    );
-
-
-    /* =========================================
-       PM10 VALUE
-       ========================================= */
-
-    ctx.fillText(
-        pm10,
-        55,
-        42
-    );
-
-
-    /* =========================================
-       PM2.5 UNIT
-       ========================================= */
-
-    ctx.font =
-        "6px Arial";
-
-    ctx.fillStyle = WHITE;
-
-    ctx.fillText(
-        "µg/m3",
-        13,
-        61
-    );
-
-
-    /* =========================================
-       PM10 UNIT
-       ========================================= */
-
-    ctx.fillText(
-        "µg/m3",
-        57,
-        61
-    );
-
-
-    /* =========================================
-       TEMPERATURE RED DOT
-       ========================================= */
-
-    ctx.fillStyle = RED;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        89,
-        28,
-        3,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-    /* =========================================
-       TEMPERATURE
-       ========================================= */
-
-    ctx.fillStyle = WHITE;
-
-    ctx.font =
-        "7px Arial";
-
-    ctx.fillText(
-        temperature.toFixed(1) + "°C",
-        94,
-        22
-    );
-
-
-    /* =========================================
-       HUMIDITY BLUE DOT
-       ========================================= */
-
-    ctx.fillStyle = BLUE;
-
-    ctx.beginPath();
-
-    ctx.arc(
-        89,
-        35,
-        3,
-        0,
-        Math.PI * 2
-    );
-
-    ctx.fill();
-
-
-    /* =========================================
-       HUMIDITY
-       ========================================= */
-
-    ctx.fillStyle = WHITE;
-
-    ctx.fillText(
-        humidity.toFixed(1) + "%",
-        94,
-        29
-    );
-
-
-    /* =========================================
-       DATE
-       ========================================= */
+function updateDateTime(){
 
     const now = new Date();
 
     const day =
-        String(
-            now.getDate()
-        ).padStart(2,"0");
-
-
-    const monthNames = [
-
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
-
-    ];
-
+        String(now.getDate()).padStart(2,"0");
 
     const month =
-        monthNames[
-            now.getMonth()
-        ];
-
+        String(now.getMonth()+1).padStart(2,"0");
 
     const year =
         now.getFullYear();
 
-
-    const dateText =
-        day +
-        "|" +
-        month +
-        "|" +
-        year;
-
-
-    ctx.textAlign = "right";
-
-    ctx.font =
-        "6px Arial";
-
-    ctx.fillStyle = WHITE;
-
-    ctx.fillText(
-        dateText,
-        119,
-        78
-    );
-
-
-    /* =========================================
-       TIME
-       ========================================= */
-
-    let hours =
-        now.getHours();
-
+    const hours =
+        String(now.getHours()).padStart(2,"0");
 
     const minutes =
-        String(
-            now.getMinutes()
-        ).padStart(2,"0");
+        String(now.getMinutes()).padStart(2,"0");
 
+    const seconds =
+        String(now.getSeconds()).padStart(2,"0");
 
-    const ampm =
-        hours >= 12
-        ? "PM"
-        : "AM";
-
-
-    hours =
-        hours % 12;
-
-
-    if(hours === 0){
-        hours = 12;
-    }
-
-
-    const timeText =
-        hours +
-        ":" +
-        minutes +
-        " " +
-        ampm;
-
-
-    ctx.fillText(
-        timeText,
-        119,
-        85
-    );
-
+    document.getElementById("date").innerHTML =
+        day + "/" +
+        month + "/" +
+        year +
+        "  " +
+        hours + ":" +
+        minutes + ":" +
+        seconds;
 }
 
 
-/* =========================================
-   START
-   ========================================= */
+/* ==============================
+   AUTO REFRESH
+   ============================== */
 
-drawDisplay();
+getAQIData();
 
+/* Refresh API every 10 seconds */
+setInterval(getAQIData,10000);
 
-/* =========================================
-   UPDATE CLOCK
-   ========================================= */
+/* Clock */
+setInterval(updateDateTime,1000);
 
-setInterval(
-    drawDisplay,
-    1000
-);
+updateDateTime();
 
 </script>
 
