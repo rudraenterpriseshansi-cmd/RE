@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
 <meta charset="UTF-8">
 
@@ -5,27 +8,61 @@
 
 <style>
 
-html,
-body{
+/* =========================================
+   RESET
+   ========================================= */
+
+*{
     margin:0;
     padding:0;
+    box-sizing:border-box;
+}
+
+
+/* =========================================
+   PAGE
+   ========================================= */
+
+html,
+body{
     width:100%;
     height:100%;
-    background:#000;
+
+    margin:0;
+    padding:0;
+
     overflow:hidden;
+
+    background:#000;
 }
+
+
+/* =========================================
+   SCREEN
+   ========================================= */
 
 #screen{
     width:100vw;
     height:100vh;
-    background:#000;
 
     display:flex;
+
     justify-content:center;
     align-items:center;
+
+    background:#000;
+
+    overflow:hidden;
 }
 
-canvas{
+
+/* =========================================
+   P10 RGB DMD
+   EXACT 128 x 96 PIXELS
+   ========================================= */
+
+#display{
+
     width:128px;
     height:96px;
 
@@ -38,7 +75,9 @@ canvas{
 }
 
 </style>
+
 </head>
+
 
 <body>
 
@@ -55,50 +94,76 @@ canvas{
 
 <script>
 
-const canvas = document.getElementById("display");
-const ctx = canvas.getContext("2d");
+/* =========================================
+   CANVAS
+   ========================================= */
+
+const canvas =
+    document.getElementById("display");
+
+const ctx =
+    canvas.getContext("2d");
 
 ctx.imageSmoothingEnabled = false;
 
 
-/* ==================================================
-   DATA
-   ================================================== */
+/* =========================================
+   FIXED DMD SIZE
+   ========================================= */
 
-let PM25 = 85;
-let PM10 = 152;
-
-let TEMPERATURE = 23.0;
-let HUMIDITY = 35.0;
+const W = 128;
+const H = 96;
 
 
-/* ==================================================
-   DRAW
-   ================================================== */
+/* =========================================
+   COLORS
+   ========================================= */
 
-function draw(){
+const BLACK = "#000000";
+const WHITE = "#FFFFFF";
+const RED   = "#FF0000";
+const BLUE  = "#0099FF";
 
-    /* BLACK BACKGROUND */
 
-    ctx.fillStyle = "#000000";
+/* =========================================
+   SENSOR DATA
+   ========================================= */
+
+let pm25 = 85;
+let pm10 = 152;
+
+let temperature = 23.0;
+let humidity = 35.0;
+
+
+/* =========================================
+   DRAW DISPLAY
+   ========================================= */
+
+function drawDisplay(){
+
+    /* -----------------------------------------
+       CLEAR DISPLAY
+       ----------------------------------------- */
+
+    ctx.fillStyle = BLACK;
 
     ctx.fillRect(
         0,
         0,
-        128,
-        96
+        W,
+        H
     );
 
 
-    /* =================================================
-       RUDRA ENTERPRISES
-       NO RE
-       NO LINE
-       ================================================= */
+    /* =========================================
+       COMPANY NAME
+       ========================================= */
 
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = WHITE;
 
-    ctx.font = "bold 9px Arial";
+    ctx.font =
+        "bold 9px Arial";
 
     ctx.textAlign = "center";
 
@@ -111,16 +176,16 @@ function draw(){
     );
 
 
-    /* =================================================
+    /* =========================================
        PM2.5 TITLE
-       MOVED DOWN 10 PIXELS
-       ================================================= */
+       ========================================= */
 
     ctx.textAlign = "left";
 
-    ctx.font = "bold 8px Arial";
+    ctx.font =
+        "bold 8px Arial";
 
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = WHITE;
 
     ctx.fillText(
         "PM2.5",
@@ -129,9 +194,9 @@ function draw(){
     );
 
 
-    /* =================================================
+    /* =========================================
        PM10 TITLE
-       ================================================= */
+       ========================================= */
 
     ctx.fillText(
         "PM10",
@@ -140,67 +205,72 @@ function draw(){
     );
 
 
-    /* =================================================
+    /* =========================================
        PM2.5 VALUE
-       ================================================= */
+       ========================================= */
 
-    ctx.font = "bold 20px Arial";
+    ctx.font =
+        "bold 20px Arial";
 
-    ctx.fillStyle = "#FF0000";
+    ctx.fillStyle = RED;
 
     ctx.fillText(
-        PM25,
+        pm25,
         12,
         42
     );
 
 
-    /* =================================================
+    /* =========================================
        PM10 VALUE
-       ================================================= */
+       ========================================= */
 
     ctx.fillText(
-        PM10,
+        pm10,
         55,
         42
     );
 
 
-    /* =================================================
-       UNITS
-       ================================================= */
+    /* =========================================
+       PM2.5 UNIT
+       ========================================= */
 
-    ctx.font = "6px Arial";
+    ctx.font =
+        "6px Arial";
 
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = WHITE;
 
     ctx.fillText(
         "µg/m3",
         13,
-        60
+        61
     );
+
+
+    /* =========================================
+       PM10 UNIT
+       ========================================= */
 
     ctx.fillText(
         "µg/m3",
         57,
-        60
+        61
     );
 
 
-    /* =================================================
+    /* =========================================
        TEMPERATURE RED DOT
-       ================================================= */
+       ========================================= */
 
-    ctx.fillStyle = "#FF0000";
+    ctx.fillStyle = RED;
 
     ctx.beginPath();
 
-    ctx.ellipse(
+    ctx.arc(
         89,
-        27,
+        28,
         3,
-        5,
-        0,
         0,
         Math.PI * 2
     );
@@ -208,35 +278,34 @@ function draw(){
     ctx.fill();
 
 
-    /* =================================================
+    /* =========================================
        TEMPERATURE
-       ================================================= */
+       ========================================= */
 
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = WHITE;
 
-    ctx.font = "7px Arial";
+    ctx.font =
+        "7px Arial";
 
     ctx.fillText(
-        TEMPERATURE.toFixed(1) + "°C",
+        temperature.toFixed(1) + "°C",
         94,
         22
     );
 
 
-    /* =================================================
+    /* =========================================
        HUMIDITY BLUE DOT
-       ================================================= */
+       ========================================= */
 
-    ctx.fillStyle = "#009CFF";
+    ctx.fillStyle = BLUE;
 
     ctx.beginPath();
 
-    ctx.ellipse(
+    ctx.arc(
         89,
-        34,
+        35,
         3,
-        5,
-        0,
         0,
         Math.PI * 2
     );
@@ -244,104 +313,140 @@ function draw(){
     ctx.fill();
 
 
-    /* =================================================
+    /* =========================================
        HUMIDITY
-       ================================================= */
+       ========================================= */
 
-    ctx.fillStyle = "#FFFFFF";
-
-    ctx.font = "7px Arial";
+    ctx.fillStyle = WHITE;
 
     ctx.fillText(
-        HUMIDITY.toFixed(1) + "%",
+        humidity.toFixed(1) + "%",
         94,
         29
     );
 
 
-    /* =================================================
+    /* =========================================
        DATE
-       ================================================= */
+       ========================================= */
 
     const now = new Date();
 
     const day =
-        String(now.getDate()).padStart(2,"0");
+        String(
+            now.getDate()
+        ).padStart(2,"0");
 
-    const months = [
-        "Jan","Feb","Mar","Apr",
-        "May","Jun","Jul","Aug",
-        "Sep","Oct","Nov","Dec"
+
+    const monthNames = [
+
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+
     ];
 
+
     const month =
-        months[now.getMonth()];
+        monthNames[
+            now.getMonth()
+        ];
+
 
     const year =
         now.getFullYear();
 
-    const date =
-        day + "|" +
-        month + "|" +
+
+    const dateText =
+        day +
+        "|" +
+        month +
+        "|" +
         year;
 
 
-    ctx.fillStyle = "#FFFFFF";
-
-    ctx.font = "6px Arial";
-
     ctx.textAlign = "right";
 
+    ctx.font =
+        "6px Arial";
+
+    ctx.fillStyle = WHITE;
+
     ctx.fillText(
-        date,
+        dateText,
         119,
-        79
+        78
     );
 
 
-    /* =================================================
+    /* =========================================
        TIME
-       ================================================= */
+       ========================================= */
 
     let hours =
         now.getHours();
+
 
     const minutes =
         String(
             now.getMinutes()
         ).padStart(2,"0");
 
+
     const ampm =
         hours >= 12
         ? "PM"
         : "AM";
 
+
     hours =
         hours % 12;
+
 
     if(hours === 0){
         hours = 12;
     }
 
+
+    const timeText =
+        hours +
+        ":" +
+        minutes +
+        " " +
+        ampm;
+
+
     ctx.fillText(
-        hours + ":" +
-        minutes + " " +
-        ampm,
+        timeText,
         119,
-        86
+        85
     );
 
 }
 
 
-/* ==================================================
+/* =========================================
    START
-   ================================================== */
+   ========================================= */
 
-draw();
+drawDisplay();
+
+
+/* =========================================
+   UPDATE CLOCK
+   ========================================= */
 
 setInterval(
-    draw,
+    drawDisplay,
     1000
 );
 
