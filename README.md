@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-
 <title>RUDRA ENTERPRISES - P10 RGB DMD</title>
 
 <meta name="viewport"
