@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AQI LED Display</title>
+<meta name="viewport"
+      content="width=128, height=96, initial-scale=1.0, maximum-scale=1.0">
+
+<title>Rudra Enterprises - AQI Display</title>
 
 <style>
-
-/* ================= RESET ================= */
-
 *{
     margin:0;
     padding:0;
@@ -16,435 +15,358 @@
 }
 
 html,body{
-    width:100%;
-    height:100%;
-    background:#000;
+    width:128px;
+    height:96px;
     overflow:hidden;
+    background:#000;
     font-family:Arial, Helvetica, sans-serif;
 }
 
-/* ================= MAIN DISPLAY ================= */
-
-.container{
-    width:100vw;
-    height:100vh;
+#display{
+    width:128px;
+    height:96px;
     background:#000;
-    color:white;
-    display:flex;
-    flex-direction:column;
+    color:#fff;
+    position:relative;
     overflow:hidden;
 }
 
-/* ================= HEADER ================= */
-
-.header{
-    height:21%;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-bottom:2px solid white;
-}
-
+/* COMPANY NAME */
 .company{
-    color:#yellow;
-    font-size:6.2vw;
-    font-weight:128;
-    letter-spacing:1px;
+    position:absolute;
+    top:3px;
+    left:0;
+    width:128px;
+    height:14px;
+
+    text-align:center;
     white-space:nowrap;
+
+    font-size:7.5px;
+    font-weight:900;
+    letter-spacing:.3px;
 }
 
-/* ================= MAIN AREA ================= */
-
-.main{
-    height:61%;
-    width:100%;
-    display:grid;
-    grid-template-columns:34% 34% 32%;
+/* TOP LINE */
+.line1{
+    position:absolute;
+    top:16px;
+    left:0;
+    width:128px;
+    height:1px;
+    background:#fff;
 }
 
-/* ================= PM BLOCKS ================= */
-
-.pm-block{
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    align-items:center;
-    padding-top:4.5%;
+.line2{
+    position:absolute;
+    top:17px;
+    left:0;
+    width:128px;
+    height:1px;
+    background:#777;
 }
 
-.parameter{
-    color:#ffffff;
-    font-size:5.2vw;
-    font-weight:128;
-    line-height:1;
+/* PARAMETER TITLES */
+.pm25-title{
+    position:absolute;
+    top:23px;
+    left:12px;
+
+    font-size:7px;
+    font-weight:900;
 }
 
-.value{
+.pm10-title{
+    position:absolute;
+    top:23px;
+    left:55px;
+
+    font-size:7px;
+    font-weight:900;
+}
+
+/* VALUES */
+.pm25-value{
+    position:absolute;
+    top:32px;
+    left:12px;
+
+    font-size:15px;
+    line-height:16px;
+    font-weight:900;
+
     color:#ff0000;
-    font-size:7.5vw;
-    font-weight:128;
-    line-height:1;
-    margin-top:5%;
 }
 
-.unit{
-    color:#ffffff;
-    font-size:3vw;
-    margin-top:3%;
+.pm10-value{
+    position:absolute;
+    top:32px;
+    left:55px;
+
+    font-size:15px;
+    line-height:16px;
+    font-weight:900;
+
+    color:#ff0000;
 }
 
-/* ================= RIGHT SIDE ================= */
+/* UNIT */
+.unit25{
+    position:absolute;
+    top:48px;
+    left:13px;
 
-.environment{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    padding-top:5%;
-    padding-left:4%;
+    font-size:6px;
+    color:#fff;
 }
 
-.env-row{
-    display:flex;
-    align-items:center;
-    height:25%;
+.unit10{
+    position:absolute;
+    top:48px;
+    left:57px;
+
+    font-size:6px;
+    color:#fff;
 }
 
-.dot{
-    width:1.7vw;
-    height:1.7vw;
-    border-radius:50%;
-    margin-right:1.5vw;
-}
+/* TEMPERATURE */
+.temp-dot{
+    position:absolute;
+    top:24px;
+    left:89px;
 
-.red-dot{
+    width:4px;
+    height:7px;
+
     background:#ff0000;
+    border-radius:50%;
 }
 
-.blue-dot{
-    background:#0099ff;
-}
+.temp{
+    position:absolute;
+    top:23px;
+    left:94px;
 
-.env-value{
-    color:#ffffff;
-    font-size:3.7vw;
-    font-weight:500;
+    font-size:6.5px;
     white-space:nowrap;
 }
 
-/* ================= BOTTOM ================= */
+/* HUMIDITY */
+.hum-dot{
+    position:absolute;
+    top:31px;
+    left:89px;
 
-.bottom{
-    height:18%;
-    width:100%;
-    border-top:2px solid white;
-    display:flex;
-    justify-content:flex-end;
-    align-items:flex-start;
-    padding-right:8%;
-    padding-top:1.5%;
+    width:4px;
+    height:7px;
+
+    background:#009cff;
+    border-radius:50%;
 }
 
-.datetime{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    color:#ffffff;
-    font-size:2.8vw;
-    line-height:1.25;
+.hum{
+    position:absolute;
+    top:30px;
+    left:94px;
+
+    font-size:6.5px;
+    white-space:nowrap;
 }
 
+/* BOTTOM DATE */
 .date{
+    position:absolute;
+    bottom:9px;
+    right:9px;
+
+    font-size:5.5px;
+    color:#fff;
     white-space:nowrap;
 }
 
+/* BOTTOM TIME */
 .time{
+    position:absolute;
+    bottom:2px;
+    right:9px;
+
+    font-size:5.5px;
+    color:#fff;
     white-space:nowrap;
 }
 
-/* ================= RESPONSIVE ================= */
+/* BOTTOM LINE */
+.bottom-line{
+    position:absolute;
+    bottom:0;
+    left:0;
 
-@media(max-aspect-ratio:1/1){
+    width:128px;
+    height:1px;
 
-    .company{
-        font-size:7vw;
-    }
-
-    .parameter{
-        font-size:6vw;
-    }
-
-    .value{
-        font-size:8vw;
-    }
-
-    .unit{
-        font-size:3.5vw;
-    }
-
-    .env-value{
-        font-size:4vw;
-    }
-
-    .datetime{
-        font-size:3.5vw;
-    }
+    background:#fff;
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div id="display">
 
-    <!-- ================= HEADER ================= -->
+    <!-- COMPANY -->
+    <div class="company">
+        RUDRA ENTERPRISES
+    </div>
 
-    <div class="header">
-        <div class="company" id="clientName">
-            RUDRA ENTERPRISES
-        </div>
+    <!-- TOP BORDER -->
+    <div class="line1"></div>
+    <div class="line2"></div>
+
+    <!-- PM2.5 -->
+    <div class="pm25-title">PM2.5</div>
+
+    <div id="pm25" class="pm25-value">
+        85
+    </div>
+
+    <div class="unit25">
+        µg/m3
     </div>
 
 
-    <!-- ================= MAIN DATA ================= -->
+    <!-- PM10 -->
+    <div class="pm10-title">PM10</div>
 
-    <div class="main">
+    <div id="pm10" class="pm10-value">
+        152
+    </div>
 
-        <!-- PM2.5 -->
-
-        <div class="pm-block">
-
-            <div class="parameter">
-                PM2.5
-            </div>
-
-            <div class="value" id="pm25">
-                --
-            </div>
-
-            <div class="unit">
-                µg/m3
-            </div>
-
-        </div>
-
-
-        <!-- PM10 -->
-
-        <div class="pm-block">
-
-            <div class="parameter">
-                PM10
-            </div>
-
-            <div class="value" id="pm10">
-                --
-            </div>
-
-            <div class="unit">
-                µg/m3
-            </div>
-
-        </div>
-
-
-        <!-- TEMPERATURE / HUMIDITY -->
-
-        <div class="environment">
-
-            <div class="env-row">
-
-                <div class="dot red-dot"></div>
-
-                <div class="env-value">
-                    <span id="temp">--</span>°C
-                </div>
-
-            </div>
-
-
-            <div class="env-row">
-
-                <div class="dot blue-dot"></div>
-
-                <div class="env-value">
-                    <span id="hum">--</span>%
-                </div>
-
-            </div>
-
-        </div>
-
+    <div class="unit10">
+        µg/m3
     </div>
 
 
-    <!-- ================= DATE / TIME ================= -->
+    <!-- TEMPERATURE -->
+    <div class="temp-dot"></div>
 
-    <div class="bottom">
-
-        <div class="datetime">
-
-            <div class="date" id="date">
-                --|---|----
-            </div>
-
-            <div class="time" id="time">
-                --:-- --
-            </div>
-
-        </div>
-
+    <div id="temperature" class="temp">
+        23.0°C
     </div>
+
+
+    <!-- HUMIDITY -->
+    <div class="hum-dot"></div>
+
+    <div id="humidity" class="hum">
+        35.0%
+    </div>
+
+
+    <!-- DATE -->
+    <div id="date" class="date">
+        24|Jan|2026
+    </div>
+
+    <!-- TIME -->
+    <div id="time" class="time">
+        12:21 PM
+    </div>
+
+    <div class="bottom-line"></div>
 
 </div>
 
 
 <script>
 
-/* =====================================================
-   GET URL PARAMETERS
-   Example:
-   ?device=11&client=RUDRA%20ENTERPRISES
-   ===================================================== */
+/* ==========================================
+   DEMO DATA
+   ========================================== */
 
-const params = new URLSearchParams(window.location.search);
-
-const device =
-    params.get("device") || "11";
-
-let name =
-    params.get("client") ||
-    params.get("name") ||
-    "RUDRA ENTERPRISES";
-
-name = decodeURIComponent(name);
-
-document.getElementById("clientName").innerText = name;
+let data = {
+    pm25: 85,
+    pm10: 152,
+    temperature: 23.0,
+    humidity: 35.0
+};
 
 
-/* =====================================================
+/* ==========================================
+   UPDATE DISPLAY
+   ========================================== */
+
+function updateDisplay(){
+
+    document.getElementById("pm25").innerText =
+        data.pm25;
+
+    document.getElementById("pm10").innerText =
+        data.pm10;
+
+    document.getElementById("temperature").innerText =
+        Number(data.temperature).toFixed(1) + "°C";
+
+    document.getElementById("humidity").innerText =
+        Number(data.humidity).toFixed(1) + "%";
+}
+
+
+/* ==========================================
    DATE & TIME
-   Format:
-   24|Jan|2026
-   12:21 PM
-   ===================================================== */
+   ========================================== */
 
-function updateTime(){
+function updateDateTime(){
 
     const now = new Date();
 
     const day =
         String(now.getDate()).padStart(2,"0");
 
+    const monthNames = [
+        "Jan","Feb","Mar","Apr","May","Jun",
+        "Jul","Aug","Sep","Oct","Nov","Dec"
+    ];
+
     const month =
-        now.toLocaleString("en-US",{
-            month:"short"
-        });
+        monthNames[now.getMonth()];
 
     const year =
         now.getFullYear();
 
-    let hours =
-        now.getHours();
+    document.getElementById("date").innerText =
+        day + "|" + month + "|" + year;
+
+
+    let hours = now.getHours();
 
     const minutes =
         String(now.getMinutes()).padStart(2,"0");
+
+    const seconds =
+        String(now.getSeconds()).padStart(2,"0");
 
     const ampm =
         hours >= 12 ? "PM" : "AM";
 
     hours =
-        hours % 12 || 12;
+        hours % 12;
 
-    document.getElementById("date").innerText =
-        `${day}|${month}|${year}`;
+    hours =
+        hours ? hours : 12;
 
     document.getElementById("time").innerText =
-        `${hours}:${minutes} ${ampm}`;
+        hours + ":" + minutes + " " + ampm;
 }
 
 
-/* =====================================================
-   FETCH API DATA
-   ===================================================== */
+/* ==========================================
+   START
+   ========================================== */
 
-async function fetchData(){
+updateDisplay();
+updateDateTime();
 
-    try{
-
-        const response = await fetch(
-            "https://aqi.rudraenterpriseshansi.workers.dev/?device="
-            + encodeURIComponent(device)
-        );
-
-        if(!response.ok){
-            throw new Error(
-                "HTTP ERROR " + response.status
-            );
-        }
-
-        const data =
-            await response.json();
-
-        console.log("API DATA:",data);
-
-        const p =
-            data.parameter || {};
-
-
-        /* ================= PM2.5 ================= */
-
-        document.getElementById("pm25").innerText =
-            p.pm25?.value ?? "--";
-
-
-        /* ================= PM10 ================= */
-
-        document.getElementById("pm10").innerText =
-            p.pm10?.value ?? "--";
-
-
-        /* ================= TEMPERATURE ================= */
-
-        document.getElementById("temp").innerText =
-            p.temperature?.value ?? "--";
-
-
-        /* ================= HUMIDITY ================= */
-
-        document.getElementById("hum").innerText =
-            p.humidity?.value ?? "--";
-
-
-    }
-
-    catch(error){
-
-        console.log(
-            "API ERROR:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   AUTO UPDATE
-   ===================================================== */
-
-setInterval(updateTime,1000);
-
-setInterval(fetchData,20000);
-
-
-/* INITIAL LOAD */
-
-updateTime();
-
-fetchData();
+setInterval(updateDateTime,1000);
 
 </script>
 
