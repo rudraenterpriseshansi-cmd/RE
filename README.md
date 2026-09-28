@@ -2,340 +2,71 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Rudra Enterprises - 128x96</title>
+
+<title>RUDRA ENTERPRISES - P10 RGB DMD</title>
+
+<meta name="viewport"
+      content="width=device-width,
+               height=device-height,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-html,body{
-    margin:0;
-    padding:0;
-    width:128px;
-    height:96px;
-    overflow:hidden;
-    background:#000;
-}
-
-/* EXACT 128 x 96 PIXELS */
-#display{
-    position:relative;
-
-    width:128px;
-    height:96px;
-
-    min-width:128px;
-    min-height:96px;
-
-    max-width:128px;
-    max-height:96px;
+html,
+body{
+    width:100%;
+    height:100%;
 
     overflow:hidden;
 
     background:#000;
-
-    color:#fff;
-
-    font-family:Arial, Helvetica, sans-serif;
 }
 
 
-/* =========================
-   COMPANY
-   ========================= */
+/* ==================================================
+   P10 RGB DMD
+   EXACT PIXEL SIZE = 128 x 96
+   ================================================== */
 
-.company{
-    position:absolute;
-
-    left:0;
-    top:3px;
+#ledCanvas{
 
     width:128px;
+    height:96px;
 
-    text-align:center;
+    display:block;
 
-    font-size:7.8px;
-    line-height:9px;
+    background:#000;
 
-    font-weight:900;
-
-    white-space:nowrap;
+    image-rendering:pixelated;
+    image-rendering:crisp-edges;
 }
 
 
-/* =========================
-   TOP LINES
-   ========================= */
+/* ==================================================
+   CENTER 128 x 96 DISPLAY ON SCREEN
+   ================================================== */
 
-.line1{
-    position:absolute;
+#screen{
 
-    left:0;
-    top:15px;
+    width:100vw;
+    height:100vh;
 
-    width:128px;
-    height:1px;
+    display:flex;
 
-    background:#fff;
-}
+    justify-content:center;
+    align-items:center;
 
-.line2{
-    position:absolute;
+    background:#000;
 
-    left:0;
-    top:17px;
-
-    width:128px;
-    height:1px;
-
-    background:#888;
-}
-
-.line3{
-    position:absolute;
-
-    left:0;
-    top:18px;
-
-    width:128px;
-    height:1px;
-
-    background:#444;
-}
-
-
-/* =========================
-   PM2.5 TITLE
-   ========================= */
-
-.pm25-title{
-    position:absolute;
-
-    left:12px;
-    top:22px;
-
-    font-size:7px;
-    line-height:8px;
-
-    font-weight:900;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   PM10 TITLE
-   ========================= */
-
-.pm10-title{
-    position:absolute;
-
-    left:55px;
-    top:22px;
-
-    font-size:7px;
-    line-height:8px;
-
-    font-weight:900;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   PM2.5 VALUE
-   ========================= */
-
-.pm25-value{
-    position:absolute;
-
-    left:12px;
-    top:31px;
-
-    font-size:15px;
-    line-height:16px;
-
-    font-weight:900;
-
-    color:#ff0000;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   PM10 VALUE
-   ========================= */
-
-.pm10-value{
-    position:absolute;
-
-    left:55px;
-    top:31px;
-
-    font-size:15px;
-    line-height:16px;
-
-    font-weight:900;
-
-    color:#ff0000;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   UNITS
-   ========================= */
-
-.unit25{
-    position:absolute;
-
-    left:13px;
-    top:48px;
-
-    font-size:6px;
-    line-height:7px;
-
-    white-space:nowrap;
-}
-
-.unit10{
-    position:absolute;
-
-    left:57px;
-    top:48px;
-
-    font-size:6px;
-    line-height:7px;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   RED TEMPERATURE DOT
-   ========================= */
-
-.temp-dot{
-    position:absolute;
-
-    left:89px;
-    top:24px;
-
-    width:4px;
-    height:7px;
-
-    background:#ff0000;
-
-    border-radius:50%;
-}
-
-
-/* =========================
-   TEMPERATURE
-   ========================= */
-
-.temp{
-    position:absolute;
-
-    left:94px;
-    top:22px;
-
-    font-size:6.5px;
-    line-height:8px;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   BLUE HUMIDITY DOT
-   ========================= */
-
-.hum-dot{
-    position:absolute;
-
-    left:89px;
-    top:31px;
-
-    width:4px;
-    height:7px;
-
-    background:#009cff;
-
-    border-radius:50%;
-}
-
-
-/* =========================
-   HUMIDITY
-   ========================= */
-
-.hum{
-    position:absolute;
-
-    left:94px;
-    top:29px;
-
-    font-size:6.5px;
-    line-height:8px;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   DATE
-   ========================= */
-
-.date{
-    position:absolute;
-
-    right:9px;
-    top:79px;
-
-    font-size:5.5px;
-    line-height:7px;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   TIME
-   ========================= */
-
-.time{
-    position:absolute;
-
-    right:9px;
-    top:86px;
-
-    font-size:5.5px;
-    line-height:7px;
-
-    white-space:nowrap;
-}
-
-
-/* =========================
-   BOTTOM LINE
-   ========================= */
-
-.bottom-line{
-    position:absolute;
-
-    left:0;
-    bottom:0;
-
-    width:128px;
-    height:1px;
-
-    background:#fff;
+    overflow:hidden;
 }
 
 </style>
@@ -344,121 +75,292 @@ html,body{
 
 <body>
 
-<div id="display">
+<div id="screen">
 
-    <!-- COMPANY -->
-    <div class="company">
-        RUDRA ENTERPRISES
-    </div>
-
-
-    <!-- TOP BORDER -->
-    <div class="line1"></div>
-    <div class="line2"></div>
-    <div class="line3"></div>
-
-
-    <!-- PM2.5 -->
-    <div class="pm25-title">
-        PM2.5
-    </div>
-
-    <div id="pm25" class="pm25-value">
-        85
-    </div>
-
-    <div class="unit25">
-        µg/m3
-    </div>
-
-
-    <!-- PM10 -->
-    <div class="pm10-title">
-        PM10
-    </div>
-
-    <div id="pm10" class="pm10-value">
-        152
-    </div>
-
-    <div class="unit10">
-        µg/m3
-    </div>
-
-
-    <!-- TEMPERATURE -->
-    <div class="temp-dot"></div>
-
-    <div id="temperature" class="temp">
-        23.0°C
-    </div>
-
-
-    <!-- HUMIDITY -->
-    <div class="hum-dot"></div>
-
-    <div id="humidity" class="hum">
-        35.0%
-    </div>
-
-
-    <!-- DATE -->
-    <div id="date" class="date">
-        24|Jan|2026
-    </div>
-
-
-    <!-- TIME -->
-    <div id="time" class="time">
-        12:21 PM
-    </div>
-
-
-    <!-- BOTTOM -->
-    <div class="bottom-line"></div>
+    <!-- EXACT P10 RGB DMD RESOLUTION -->
+    <canvas
+        id="ledCanvas"
+        width="128"
+        height="96">
+    </canvas>
 
 </div>
 
 
 <script>
 
-/* =========================
+/* ==================================================
+   P10 RGB DMD CONFIGURATION
+   ================================================== */
+
+const WIDTH  = 128;
+const HEIGHT = 96;
+
+const canvas =
+    document.getElementById("ledCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+
+/* Disable smoothing */
+
+ctx.imageSmoothingEnabled = false;
+
+
+/* ==================================================
    SENSOR DATA
-   ========================= */
+   ================================================== */
 
 let data = {
-    pm25:85,
-    pm10:152,
-    temperature:23.0,
-    humidity:35.0
+
+    pm25: 85,
+
+    pm10: 152,
+
+    temperature: 23.0,
+
+    humidity: 35.0
+
 };
 
 
-/* =========================
-   UPDATE DATA
-   ========================= */
+/* ==================================================
+   COLORS - RGB DISPLAY
+   ================================================== */
 
-function updateDisplay(){
+const BLACK = "#000000";
 
-    document.getElementById("pm25").textContent =
-        data.pm25;
+const WHITE = "#FFFFFF";
 
-    document.getElementById("pm10").textContent =
-        data.pm10;
+const RED = "#FF0000";
 
-    document.getElementById("temperature").textContent =
-        Number(data.temperature).toFixed(1) + "°C";
+const BLUE = "#009CFF";
 
-    document.getElementById("humidity").textContent =
-        Number(data.humidity).toFixed(1) + "%";
-}
+const GREY = "#777777";
 
 
-/* =========================
-   DATE / TIME
-   ========================= */
+/* ==================================================
+   DRAW COMPLETE 128 x 96 DISPLAY
+   ================================================== */
 
-function updateDateTime(){
+function drawDisplay(){
+
+    /* ----------------------------------------------
+       BLACK BACKGROUND
+       ---------------------------------------------- */
+
+    ctx.fillStyle = BLACK;
+
+    ctx.fillRect(
+        0,
+        0,
+        WIDTH,
+        HEIGHT
+    );
+
+
+    /* ----------------------------------------------
+       COMPANY NAME
+       ---------------------------------------------- */
+
+    ctx.fillStyle = WHITE;
+
+    ctx.font =
+        "900 10px Arial";
+
+    ctx.textAlign = "center";
+
+    ctx.textBaseline = "top";
+
+    ctx.fillText(
+        "RUDRA ENTERPRISES",
+        64,
+        3
+    );
+
+
+    /* ----------------------------------------------
+       TOP BORDER
+       ---------------------------------------------- */
+
+    ctx.fillStyle = WHITE;
+
+    ctx.fillRect(
+        0,
+        15,
+        128,
+        1
+    );
+
+
+    ctx.fillStyle = GREY;
+
+    ctx.fillRect(
+        0,
+        17,
+        128,
+        1
+    );
+
+
+    /* ----------------------------------------------
+       PM2.5 TITLE
+       ---------------------------------------------- */
+
+    ctx.fillStyle = WHITE;
+
+    ctx.textAlign = "left";
+
+    ctx.font =
+        "900 9px Arial";
+
+    ctx.fillText(
+        "PM2.5",
+        12,
+        22
+    );
+
+
+    /* ----------------------------------------------
+       PM10 TITLE
+       ---------------------------------------------- */
+
+    ctx.fillText(
+        "PM10",
+        55,
+        22
+    );
+
+
+    /* ----------------------------------------------
+       PM2.5 VALUE
+       ---------------------------------------------- */
+
+    ctx.fillStyle = RED;
+
+    ctx.font =
+        "900 21px Arial";
+
+    ctx.fillText(
+        data.pm25,
+        12,
+        32
+    );
+
+
+    /* ----------------------------------------------
+       PM10 VALUE
+       ---------------------------------------------- */
+
+    ctx.fillText(
+        data.pm10,
+        55,
+        32
+    );
+
+
+    /* ----------------------------------------------
+       PM2.5 UNIT
+       ---------------------------------------------- */
+
+    ctx.fillStyle = WHITE;
+
+    ctx.font =
+        "6px Arial";
+
+    ctx.fillText(
+        "µg/m3",
+        13,
+        50
+    );
+
+
+    /* ----------------------------------------------
+       PM10 UNIT
+       ---------------------------------------------- */
+
+    ctx.fillText(
+        "µg/m3",
+        57,
+        50
+    );
+
+
+    /* ----------------------------------------------
+       TEMPERATURE RED DOT
+       ---------------------------------------------- */
+
+    ctx.fillStyle = RED;
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        89,
+        27,
+        3,
+        5,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* ----------------------------------------------
+       TEMPERATURE
+       ---------------------------------------------- */
+
+    ctx.fillStyle = WHITE;
+
+    ctx.font =
+        "7px Arial";
+
+    ctx.fillText(
+        Number(data.temperature).toFixed(1) + "°C",
+        94,
+        22
+    );
+
+
+    /* ----------------------------------------------
+       HUMIDITY BLUE DOT
+       ---------------------------------------------- */
+
+    ctx.fillStyle = BLUE;
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        89,
+        34,
+        3,
+        5,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* ----------------------------------------------
+       HUMIDITY
+       ---------------------------------------------- */
+
+    ctx.fillStyle = WHITE;
+
+    ctx.fillText(
+        Number(data.humidity).toFixed(1) + "%",
+        94,
+        29
+    );
+
+
+    /* ----------------------------------------------
+       DATE
+       ---------------------------------------------- */
 
     const now = new Date();
 
@@ -466,8 +368,18 @@ function updateDateTime(){
         String(now.getDate()).padStart(2,"0");
 
     const months = [
-        "Jan","Feb","Mar","Apr","May","Jun",
-        "Jul","Aug","Sep","Oct","Nov","Dec"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
     ];
 
     const month =
@@ -476,17 +388,40 @@ function updateDateTime(){
     const year =
         now.getFullYear();
 
-    document.getElementById("date").textContent =
+    const dateText =
         day + "|" + month + "|" + year;
 
 
-    let hours = now.getHours();
+    ctx.fillStyle = WHITE;
+
+    ctx.font =
+        "6px Arial";
+
+    ctx.textAlign = "right";
+
+    ctx.fillText(
+        dateText,
+        119,
+        79
+    );
+
+
+    /* ----------------------------------------------
+       TIME
+       ---------------------------------------------- */
+
+    let hours =
+        now.getHours();
 
     const minutes =
-        String(now.getMinutes()).padStart(2,"0");
+        String(
+            now.getMinutes()
+        ).padStart(2,"0");
 
     const ampm =
-        hours >= 12 ? "PM" : "AM";
+        hours >= 12
+        ? "PM"
+        : "AM";
 
     hours =
         hours % 12;
@@ -495,19 +430,70 @@ function updateDateTime(){
         hours = 12;
     }
 
-    document.getElementById("time").textContent =
-        hours + ":" + minutes + " " + ampm;
+    const timeText =
+        hours +
+        ":" +
+        minutes +
+        " " +
+        ampm;
+
+
+    ctx.fillText(
+        timeText,
+        119,
+        86
+    );
+
+
+    /* ----------------------------------------------
+       BOTTOM BORDER
+       ---------------------------------------------- */
+
+    ctx.fillStyle = WHITE;
+
+    ctx.fillRect(
+        0,
+        95,
+        128,
+        1
+    );
+
 }
 
 
-/* =========================
-   START
-   ========================= */
+/* ==================================================
+   DRAW DISPLAY
+   ================================================== */
 
-updateDisplay();
-updateDateTime();
+drawDisplay();
 
-setInterval(updateDateTime,1000);
+
+/* ==================================================
+   UPDATE CLOCK EVERY SECOND
+   ================================================== */
+
+setInterval(
+    drawDisplay,
+    1000
+);
+
+
+/* ==================================================
+   EXAMPLE LIVE DATA UPDATE
+   ==================================================
+   
+   Later your API can update:
+
+   data.pm25
+   data.pm10
+   data.temperature
+   data.humidity
+
+   Then call:
+
+   drawDisplay();
+
+   ================================================== */
 
 </script>
 
