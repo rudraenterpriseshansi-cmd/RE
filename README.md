@@ -142,11 +142,11 @@ html,body{
 .env{
     position:absolute;
     left:88px;
-    top:21px;
+    top:25px;
 
     color:var(--white);
 
-    font-size:5px;
+    font-size:8px;
     line-height:8px;
     white-space:nowrap;
 }
@@ -189,12 +189,12 @@ html,body{
 .date{
     position:absolute;
 
-    left:86px;
+    left:10px;
     top:61px;
 
     color:var(--blue);
 
-    font-size:5px;
+    font-size:10px;
     white-space:nowrap;
 }
 
