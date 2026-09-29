@@ -189,7 +189,7 @@ html,body{
 .date{
     position:absolute;
 
-    left:10px;
+    left:93px;
     top:10px;
 
     color:var(--blue);
