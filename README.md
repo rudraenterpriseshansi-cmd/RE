@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-
-<!-- P10 RGB / HD Player -->
-<meta name="viewport"
-      content="width=128,height=96,initial-scale=1.0,
-               maximum-scale=1.0,user-scalable=no">
 
 <title>RUDRA ENTERPRISES</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -18,28 +14,23 @@
 }
 
 html,body{
-    width:100%;
-    height:100%;
-    background:#000;
-    overflow:hidden;
-}
-
-body{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-/* EXACT 128 x 96 PIXEL DISPLAY */
-#display{
     width:128px;
     height:96px;
+    background:#000;
+    overflow:hidden;
+}
+
+#display{
     position:relative;
+
+    /* EXACT SIZE */
+    width:128px;
+    height:96px;
+
     background:#000;
     color:#fff;
-    overflow:hidden;
-    transform-origin:center center;
+
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 /* COMPANY NAME */
@@ -47,27 +38,36 @@ body{
     position:absolute;
     left:5px;
     top:3px;
+
     width:118px;
+
     text-align:center;
+
     font-size:7px;
     font-weight:bold;
+
     white-space:nowrap;
 }
 
 /* TOP LINE */
 .topline{
     position:absolute;
+
     left:0;
     top:14px;
+
     width:128px;
     height:1px;
+
     background:#fff;
 }
 
 /* PARAMETER NAME */
 .label{
     position:absolute;
+
     top:22px;
+
     font-size:6px;
     font-weight:bold;
 }
@@ -80,13 +80,17 @@ body{
     left:55px;
 }
 
-/* PM VALUES */
+/* VALUES */
 .value{
     position:absolute;
+
     top:34px;
+
     font-size:12px;
     line-height:12px;
+
     font-weight:bold;
+
     color:#ff0000;
 }
 
@@ -101,8 +105,11 @@ body{
 /* UNIT */
 .unit{
     position:absolute;
+
     top:49px;
+
     font-size:5px;
+
     white-space:nowrap;
 }
 
@@ -117,18 +124,24 @@ body{
 /* TEMPERATURE / HUMIDITY */
 .environment{
     position:absolute;
+
     right:8px;
     top:22px;
+
     font-size:5.5px;
     line-height:8px;
+
     white-space:nowrap;
 }
 
 .dot{
     display:inline-block;
+
     width:4px;
     height:4px;
+
     border-radius:50%;
+
     margin-right:2px;
 }
 
@@ -143,30 +156,40 @@ body{
 /* DATE */
 .date{
     position:absolute;
+
     right:9px;
     top:61px;
+
     font-size:5px;
+
     white-space:nowrap;
 }
 
 /* TIME */
 .time{
     position:absolute;
+
     right:9px;
     top:68px;
+
     font-size:5px;
+
     white-space:nowrap;
 }
 
 /* BOTTOM LINE */
 .bottomline{
     position:absolute;
+
     left:0;
     top:74px;
+
     width:128px;
     height:1px;
+
     background:#fff;
 }
+
 </style>
 </head>
 
@@ -174,36 +197,44 @@ body{
 
 <div id="display">
 
+    <!-- COMPANY -->
     <div class="title">
         RUDRA ENTERPRISES
     </div>
 
+    <!-- LINE -->
     <div class="topline"></div>
 
+
+    <!-- PM2.5 -->
     <div class="label pm25label">
         PM2.5
-    </div>
-
-    <div class="label pm10label">
-        PM10
     </div>
 
     <div class="value pm25value" id="pm25">
         85
     </div>
 
-    <div class="value pm10value" id="pm10">
-        152
-    </div>
-
     <div class="unit pm25unit">
         µg/m3
+    </div>
+
+
+    <!-- PM10 -->
+    <div class="label pm10label">
+        PM10
+    </div>
+
+    <div class="value pm10value" id="pm10">
+        152
     </div>
 
     <div class="unit pm10unit">
         µg/m3
     </div>
 
+
+    <!-- TEMP / HUMIDITY -->
     <div class="environment">
 
         <span class="dot red"></span>
@@ -216,14 +247,20 @@ body{
 
     </div>
 
+
+    <!-- DATE -->
     <div class="date" id="date">
         24|Jan|2026
     </div>
 
+
+    <!-- TIME -->
     <div class="time" id="time">
         12:21 PM
     </div>
 
+
+    <!-- BOTTOM LINE -->
     <div class="bottomline"></div>
 
 </div>
@@ -231,65 +268,44 @@ body{
 
 <script>
 
-/* ==========================================
-   RUDRA ENTERPRISES
-   P10 RGB HD PLAYER
-   DISPLAY SIZE: 128 x 96 PIXELS
-   ========================================== */
+/* =========================================
+   EXACT DISPLAY SIZE
+   WIDTH  = 128 PIXELS
+   HEIGHT = 96 PIXELS
+   ========================================= */
 
 
-/* GET DATA FROM URL */
+/* READ URL PARAMETERS */
 
-function getParam(name, fallback){
+function getParam(name, defaultValue){
 
-    const params =
-        new URLSearchParams(window.location.search);
+    const url =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    return params.get(name) !== null
-        ? params.get(name)
-        : fallback;
+    return url.get(name) || defaultValue;
 }
 
 
-/* UPDATE DISPLAY */
+/* UPDATE DATA */
 
 function updateDisplay(){
 
-    /* PM2.5 */
-
-    document.getElementById("pm25").textContent =
+    document.getElementById("pm25").innerText =
         getParam("pm25","85");
 
-
-    /* PM10 */
-
-    document.getElementById("pm10").textContent =
+    document.getElementById("pm10").innerText =
         getParam("pm10","152");
 
+    document.getElementById("temp").innerText =
+        getParam("temp","23.0") + "°C";
 
-    /* TEMPERATURE */
-
-    let temp =
-        getParam("temp","23.0");
-
-    document.getElementById("temp").textContent =
-        temp.toString().includes("°")
-        ? temp
-        : temp + "°C";
+    document.getElementById("hum").innerText =
+        getParam("hum","35.0") + "%";
 
 
-    /* HUMIDITY */
-
-    let hum =
-        getParam("hum","35.0");
-
-    document.getElementById("hum").textContent =
-        hum.toString().includes("%")
-        ? hum
-        : hum + "%";
-
-
-    /* DATE + TIME */
+    /* DATE */
 
     const now = new Date();
 
@@ -303,13 +319,19 @@ function updateDisplay(){
         String(now.getDate()).padStart(2,"0");
 
     const date =
-        day + "|" +
-        months[now.getMonth()] + "|" +
+        day +
+        "|" +
+        months[now.getMonth()] +
+        "|" +
         now.getFullYear();
 
+    document.getElementById("date").innerText =
+        getParam("date",date);
 
-    let hour =
-        now.getHours();
+
+    /* TIME */
+
+    let hour = now.getHours();
 
     const ampm =
         hour >= 12 ? "PM" : "AM";
@@ -318,57 +340,23 @@ function updateDisplay(){
         hour % 12 || 12;
 
     const minute =
-        String(now.getMinutes())
-        .padStart(2,"0");
+        String(now.getMinutes()).padStart(2,"0");
 
+    const time =
+        String(hour).padStart(2,"0") +
+        ":" +
+        minute +
+        " " +
+        ampm;
 
-    document.getElementById("date").textContent =
-        getParam("date",date);
-
-
-    document.getElementById("time").textContent =
-        getParam(
-            "time",
-            String(hour).padStart(2,"0")
-            + ":" +
-            minute
-            + " "
-            + ampm
-        );
-}
-
-
-/* FIT 128 x 96 TO HD PLAYER SCREEN */
-
-function fitDisplay(){
-
-    const display =
-        document.getElementById("display");
-
-    const scale =
-        Math.min(
-            window.innerWidth / 128,
-            window.innerHeight / 96
-        );
-
-    display.style.transform =
-        "scale(" + scale + ")";
+    document.getElementById("time").innerText =
+        getParam("time",time);
 }
 
 
 /* START */
 
 updateDisplay();
-
-fitDisplay();
-
-
-/* WINDOW RESIZE */
-
-window.addEventListener(
-    "resize",
-    fitDisplay
-);
 
 
 /* UPDATE EVERY SECOND */
