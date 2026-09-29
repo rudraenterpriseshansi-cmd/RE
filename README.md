@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-
+<meta name="viewport" content="width=128,height=96">
 <title>RUDRA ENTERPRISES</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -21,175 +20,130 @@ html,body{
 }
 
 #display{
-    position:relative;
-
-    /* EXACT SIZE */
     width:128px;
     height:96px;
-
+    position:relative;
     background:#000;
-    color:#fff;
-
+    overflow:hidden;
     font-family:Arial,Helvetica,sans-serif;
 }
 
-/* COMPANY NAME */
-.title{
+/* RUDRA ENTERPRISES */
+.company{
     position:absolute;
-    left:5px;
+    left:0;
     top:3px;
-
-    width:118px;
-
+    width:128px;
+    height:9px;
+    color:#fff;
     text-align:center;
-
     font-size:7px;
     font-weight:bold;
-
+    line-height:9px;
     white-space:nowrap;
 }
 
 /* TOP LINE */
-.topline{
+.top-line{
     position:absolute;
-
     left:0;
     top:14px;
-
     width:128px;
     height:1px;
-
     background:#fff;
 }
 
-/* PARAMETER NAME */
-.label{
+/* LABELS */
+.pm-label{
     position:absolute;
-
-    top:22px;
-
+    top:21px;
+    color:#fff;
     font-size:6px;
     font-weight:bold;
 }
 
-.pm25label{
-    left:12px;
-}
-
-.pm10label{
-    left:55px;
-}
+.pm25-label{left:12px;}
+.pm10-label{left:55px;}
 
 /* VALUES */
-.value{
+.pm-value{
     position:absolute;
-
-    top:34px;
-
-    font-size:12px;
-    line-height:12px;
-
-    font-weight:bold;
-
+    top:31px;
     color:#ff0000;
+    font-size:13px;
+    font-weight:bold;
+    line-height:14px;
 }
 
-.pm25value{
-    left:12px;
-}
+.pm25-value{left:12px;}
+.pm10-value{left:56px;}
 
-.pm10value{
-    left:56px;
-}
-
-/* UNIT */
+/* UNITS */
 .unit{
     position:absolute;
-
-    top:49px;
-
+    top:48px;
+    color:#fff;
     font-size:5px;
-
-    white-space:nowrap;
 }
 
-.pm25unit{
-    left:13px;
-}
+.pm25-unit{left:13px;}
+.pm10-unit{left:57px;}
 
-.pm10unit{
-    left:57px;
-}
-
-/* TEMPERATURE / HUMIDITY */
-.environment{
+/* TEMPERATURE + HUMIDITY */
+.env{
     position:absolute;
-
-    right:8px;
-    top:22px;
-
-    font-size:5.5px;
+    left:88px;
+    top:21px;
+    color:#fff;
+    font-size:5px;
     line-height:8px;
-
     white-space:nowrap;
 }
 
-.dot{
+.red-dot,
+.blue-dot{
     display:inline-block;
-
     width:4px;
     height:4px;
-
     border-radius:50%;
-
     margin-right:2px;
 }
 
-.red{
+.red-dot{
     background:#ff0000;
 }
 
-.blue{
-    background:#0099ff;
+.blue-dot{
+    background:#008cff;
 }
 
 /* DATE */
 .date{
     position:absolute;
-
-    right:9px;
+    left:86px;
     top:61px;
-
+    color:#fff;
     font-size:5px;
-
-    white-space:nowrap;
 }
 
 /* TIME */
 .time{
     position:absolute;
-
-    right:9px;
+    left:93px;
     top:68px;
-
+    color:#fff;
     font-size:5px;
-
-    white-space:nowrap;
 }
 
 /* BOTTOM LINE */
-.bottomline{
+.bottom-line{
     position:absolute;
-
     left:0;
     top:74px;
-
     width:128px;
     height:1px;
-
     background:#fff;
 }
-
 </style>
 </head>
 
@@ -197,112 +151,94 @@ html,body{
 
 <div id="display">
 
-    <!-- COMPANY -->
-    <div class="title">
+    <div class="company">
         RUDRA ENTERPRISES
     </div>
 
-    <!-- LINE -->
-    <div class="topline"></div>
+    <div class="top-line"></div>
 
-
-    <!-- PM2.5 -->
-    <div class="label pm25label">
+    <div class="pm-label pm25-label">
         PM2.5
     </div>
 
-    <div class="value pm25value" id="pm25">
-        85
-    </div>
-
-    <div class="unit pm25unit">
-        µg/m3
-    </div>
-
-
-    <!-- PM10 -->
-    <div class="label pm10label">
+    <div class="pm-label pm10-label">
         PM10
     </div>
 
-    <div class="value pm10value" id="pm10">
+    <div class="pm-value pm25-value" id="pm25">
+        85
+    </div>
+
+    <div class="pm-value pm10-value" id="pm10">
         152
     </div>
 
-    <div class="unit pm10unit">
+    <div class="unit pm25-unit">
         µg/m3
     </div>
 
-
-    <!-- TEMP / HUMIDITY -->
-    <div class="environment">
-
-        <span class="dot red"></span>
-        <span id="temp">23.0°C</span>
-
-        <br>
-
-        <span class="dot blue"></span>
-        <span id="hum">35.0%</span>
-
+    <div class="unit pm10-unit">
+        µg/m3
     </div>
 
+    <div class="env">
+        <span class="red-dot"></span>
+        <span id="temp">23.0°C</span>
+        <br>
+        <span class="blue-dot"></span>
+        <span id="hum">35.0%</span>
+    </div>
 
-    <!-- DATE -->
     <div class="date" id="date">
         24|Jan|2026
     </div>
 
-
-    <!-- TIME -->
     <div class="time" id="time">
         12:21 PM
     </div>
 
-
-    <!-- BOTTOM LINE -->
-    <div class="bottomline"></div>
+    <div class="bottom-line"></div>
 
 </div>
 
-
 <script>
 
-/* =========================================
-   EXACT DISPLAY SIZE
-   WIDTH  = 128 PIXELS
-   HEIGHT = 96 PIXELS
-   ========================================= */
+/* ==========================================
+   RUDRA ENTERPRISES
+   P10 RGB DMD
+   EXACT SIZE: 128 x 96 PIXELS
+   ========================================== */
 
-
-/* READ URL PARAMETERS */
-
-function getParam(name, defaultValue){
+function getData(name, defaultValue){
 
     const url =
         new URLSearchParams(
             window.location.search
         );
 
-    return url.get(name) || defaultValue;
+    return url.has(name)
+        ? url.get(name)
+        : defaultValue;
 }
 
 
-/* UPDATE DATA */
-
 function updateDisplay(){
 
-    document.getElementById("pm25").innerText =
-        getParam("pm25","85");
+    /* PM2.5 */
+    document.getElementById("pm25").textContent =
+        getData("pm25","85");
 
-    document.getElementById("pm10").innerText =
-        getParam("pm10","152");
+    /* PM10 */
+    document.getElementById("pm10").textContent =
+        getData("pm10","152");
 
-    document.getElementById("temp").innerText =
-        getParam("temp","23.0") + "°C";
+    /* Temperature */
+    document.getElementById("temp").textContent =
+        getData("temp","23.0") + "°C";
 
-    document.getElementById("hum").innerText =
-        getParam("hum","35.0") + "%";
+    /* Humidity */
+    document.getElementById("hum").textContent =
+        getData("hum","35.0") + "%";
 
 
     /* DATE */
@@ -318,15 +254,13 @@ function updateDisplay(){
     const day =
         String(now.getDate()).padStart(2,"0");
 
-    const date =
-        day +
-        "|" +
-        months[now.getMonth()] +
-        "|" +
+    const currentDate =
+        day + "|" +
+        months[now.getMonth()] + "|" +
         now.getFullYear();
 
-    document.getElementById("date").innerText =
-        getParam("date",date);
+    document.getElementById("date").textContent =
+        getData("date",currentDate);
 
 
     /* TIME */
@@ -342,29 +276,21 @@ function updateDisplay(){
     const minute =
         String(now.getMinutes()).padStart(2,"0");
 
-    const time =
-        String(hour).padStart(2,"0") +
-        ":" +
-        minute +
-        " " +
-        ampm;
+    const currentTime =
+        String(hour).padStart(2,"0")
+        + ":" +
+        minute
+        + " "
+        + ampm;
 
-    document.getElementById("time").innerText =
-        getParam("time",time);
+    document.getElementById("time").textContent =
+        getData("time",currentTime);
 }
 
 
-/* START */
-
 updateDisplay();
 
-
-/* UPDATE EVERY SECOND */
-
-setInterval(
-    updateDisplay,
-    1000
-);
+setInterval(updateDisplay,1000);
 
 </script>
 
