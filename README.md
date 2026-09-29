@@ -149,8 +149,6 @@ html,body{
 
 <body>
 
-<div id="display">
-
     <div class="company">
         RUDRA ENTERPRISES
     </div>
